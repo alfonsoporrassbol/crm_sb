@@ -522,6 +522,23 @@
                     <input id="email_client" name="email_client" type="email" class="form-control" placeholder="ejemplo@correo.com">
                   </div>
                 </div>
+                <!-- Línea de producto - Select -->
+                <div class="col-md-4 col-12">
+                  <div class="info-field">
+                    <label class="info-field-label">Línea de producto</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fa-solid fa-layer-group"></i>
+                      </div>
+                    </div>
+                    <select id="productLine" name="productLine" class="form-select active_Select2">
+                      <option value="Autos" selected>Autos</option>
+                      <option value="Salud">Salud</option>
+                      <option value="Vida">Vida</option>
+                      <option value="Crédito">Crédito</option>
+                    </select>
+                  </div>
+                </div>
                 <!-- Tipo de póliza - Select -->
                 <div class="col-md-4 col-12">
                   <div class="info-field">
@@ -540,7 +557,7 @@
                 <!-- Producto Autos - Select -->
                 <div class="col-md-4 col-12">
                   <div class="info-field">
-                    <label class="info-field-label">Producto Autos</label>
+                    <label class="info-field-label">Producto</label>
                     <div class="info-field-icon-wrapper">
                       <div class="info-field-icon bg-document">
                         <i class="fa-solid fa-suitcase-medical"></i>
@@ -554,7 +571,7 @@
                 <!-- Detalle Producto - Select -->
                 <div id="container_detailsPlanPoliza" class="col-md-4 col-12" hidden>
                   <div class="info-field">
-                    <label class="info-field-label">Detalle Plan Autos</label>
+                    <label class="info-field-label">Detalle Plan</label>
                     <div class="info-field-icon-wrapper">
                       <div class="info-field-icon bg-document">
                         <i class="fa-solid fa-suitcase-medical"></i>
@@ -565,7 +582,7 @@
                   </div>
                 </div>
                 <!-- Placa del cliente - Input text -->
-                <div class="col-md-6 col-12">
+                <div id="group_placa_client" class="col-md-6 col-12">
                   <div class="info-field">
                     <label class="info-field-label">Placa del cliente</label>
                     <div class="info-field-icon-wrapper">
