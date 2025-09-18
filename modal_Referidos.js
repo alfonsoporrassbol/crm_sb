@@ -125,7 +125,7 @@
         });
       } else {
         $(".additionalOptions").prop('hidden', true);
-        $(this).find("input[name='modalReferidosNombreRadicador']").prop('required', false);
+        $(".additionalOptions input[name='modalReferidosNombreRadicador']").prop('required', false);
       }
     })
 
@@ -396,5 +396,21 @@
         stagger: 0.2
       });
     }
+
+    // Global helpers for overlay and keyboard interactions
+    window.closeModal = function() {
+      $('#modalReferidosOverlay').removeClass('modal-referidos-active');
+      $('body').css('overflow', '');
+      resetForm();
+    };
+
+    window.closeModalOnOverlay = function(event) {
+      const overlay = document.getElementById('modalReferidosOverlay');
+      if (!event) return;
+      const target = event.target;
+      if (target === overlay || (target && target.id === 'modalReferidosOverlay')) {
+        window.closeModal();
+      }
+    };
   });
 </script>
