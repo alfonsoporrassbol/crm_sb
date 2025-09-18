@@ -87,12 +87,10 @@
       }else if($(this).val() === "Individual"){
         selectOptions = `
           <option selected disabled hidden>Seleccione</option>   
-          <option value="PREMIUM+360">Premium + 360</option>
-          <option value="PREMIUM">Premium</option>
-          <option value="ESTANDAR">Estándar</option>
-          <option value="CLASICO">Clásico</option>
-          <option value="LIGERO">Ligero</option>
-          <option value="VERDE">Verde</option>
+          <option value="Salud Integral">Salud Integral</option>
+          <option value="Salud a su Medida">Salud a su Medida</option>
+          <option value="Bienestar y Salud para disfrutar">Bienestar y Salud para disfrutar</option>
+          <option value="Salud Internacional">Salud Internacional</option>
         `
       }
       $("#detailsPoliza").append(selectOptions);
@@ -184,12 +182,12 @@
       }).createEventForUser(String(dateRecordatory),clientName,clientPhone,requestUniqueId);
     });
 
-    $("#placa_client").on('change',function(){
+    $("#getEPS").on('change',function(){
       if($(this).val() === "No"){
         Swal.fire({
           icon: "question",
-          title: 'CLIENTE SIN PLACA',
-          html: 'El cliente no cuenta con placa por lo que se desistirá el caso automáticamente, ¿Desea continuar con el desistimiento?',
+          title: 'CLIENTE SIN EPS',
+          html: 'El cliente no cuenta con EPS por lo que se desistirá el caso automáticamente, ¿Desea continuar con el desistimiento?',
           showCancelButton: true,
           cancelButtonText: `Regresar&nbsp;<i class="fa-solid fa-rotate-left"></i>`,
           confirmButtonText: `Continuar&nbsp;<i class="fa-regular fa-circle-check"></i>`,
@@ -277,7 +275,7 @@
               });
             }).saveManagmentLeadEPS(clientInfoData,requestUniqueId);
           }else{
-            $("#placa_client").val('')
+            $("#getEPS").val('')
           }
         })      
       }
@@ -596,7 +594,7 @@
           sectionAside.prop('hidden',true);
           overlay.removeClass('is-visible');
         }
-        $("#title_card_totals").html('Total ');
+        $("#title_card_totals").html('Total Pendientes');
       }).getDataUser();
     });
 
@@ -633,7 +631,7 @@
       }).withSuccessHandler(function(data){
         createSecundaryTable(data);
         overlay.removeClass('is-visible');
-        $("#title_card_totals").html('Total');
+        $("#title_card_totals").html('Total Seguimiento');
         showModernToast('success', '¡Clientes en Seguimiento!', 'Todo listo para comenzar la gestión.','toast-bottom-right');
       }).getDataFollowUp();
     });
@@ -671,7 +669,7 @@
       }).withSuccessHandler(function(data){
         createQuaternaryTable(data);
         overlay.removeClass('is-visible');
-        $("#title_card_totals").html('Total');
+        $("#title_card_totals").html('Total Intención');
         showModernToast('success', '¡Clientes con Intención Comercial!', 'Todo listo para comenzar la gestión.','toast-bottom-right');
       }).getDataCommercialIntent();
     });
@@ -709,7 +707,7 @@
       }).withSuccessHandler(function(data){
         createTercerityTable(data);
         overlay.removeClass('is-visible');
-        $("#title_card_totals").html('Total')
+        $("#title_card_totals").html('Total Desistidos')
         showModernToast('success', '¡Clientes Desistidos!', 'Si quieres recuperar a alguno solo da click en gestionar..','toast-bottom-right');
       }).getDataGivenUp();
     });
@@ -1036,37 +1034,22 @@
       }
     });
 
-    $('#titleTotalPremium360').closest('.modern-card').on('click', function() {
+    $('#titleTotalMedida').closest('.modern-card').on('click', function() {
         let tablePenddings = $('#authorsTable').DataTable();
-        tablePenddings.column(2).search('PREMIUM+360').draw();
+        tablePenddings.column(2).search('SALUD MEDIDA').draw();
     });
 
-    $('#titleTotalPremium').closest('.modern-card').on('click', function() {
+    $('#titleTotalIntegral').closest('.modern-card').on('click', function() {
         let tablePenddings = $('#authorsTable').DataTable();
-        tablePenddings.column(2).search('PREMIUM').draw();
+        tablePenddings.column(2).search('SALUD INTEGRAL').draw();
     });
 
-    $('#titleTotalEstandar').closest('.modern-card').on('click', function() {
+    $('#titleTotalBienestar').closest('.modern-card').on('click', function() {
         let tablePenddings = $('#authorsTable').DataTable();
-        tablePenddings.column(2).search('ESTANDAR').draw();
+        tablePenddings.column(2).search('BIENESTAR Y SALUD').draw();
     });
 
-    $('#titleTotalClasico').closest('.modern-card').on('click', function() {
-        let tablePenddings = $('#authorsTable').DataTable();
-        tablePenddings.column(2).search('CLASICO').draw();
-    });
-
-    $('#titleTotalLigero').closest('.modern-card').on('click', function() {
-        let tablePenddings = $('#authorsTable').DataTable();
-        tablePenddings.column(2).search('LIGERO').draw();
-    });
-
-    $('#titleTotalVerde').closest('.modern-card').on('click', function() {
-        let tablePenddings = $('#authorsTable').DataTable();
-        tablePenddings.column(2).search('VERDE').draw();
-    });
-
-    $('#titleTotalAutos').closest('.modern-card').on('click', function() {
+    $('#titleTotalSalud').closest('.modern-card').on('click', function() {
         let tablePenddings = $('#authorsTable').DataTable();
         tablePenddings.column(2).search('').draw();
     });
@@ -1369,20 +1352,14 @@
   });
 
   function createPrimaryTable(data){
-      $('#titleTotalPremium360').text(data[2]);
-      $('#titleTotalPremium360').attr('data-target-number', data[2]);
-      $('#titleTotalPremium').text(data[3]);
-      $('#titleTotalPremium').attr('data-target-number', data[3]);
-      $('#titleTotalEstandar').text(data[4]);
-      $('#titleTotalEstandar').attr('data-target-number', data[4]);
-      $('#titleTotalClasico').text(data[5]);
-      $('#titleTotalClasico').attr('data-target-number', data[5]);
-      $('#titleTotalLigero').text(data[6]);
-      $('#titleTotalLigero').attr('data-target-number', data[6]);
-      $('#titleTotalVerde').text(data[7]);
-      $('#titleTotalVerde').attr('data-target-number', data[7]);
-      $('#titleTotalAutos').text(data[1]);
-      $('#titleTotalAutos').attr('data-target-number', data[1]);
+      $('#titleTotalMedida').text(data[3]);
+      $('#titleTotalMedida').attr('data-target-number', data[3]);
+      $('#titleTotalIntegral').text(data[2]);
+      $('#titleTotalIntegral').attr('data-target-number', data[2]);
+      $('#titleTotalBienestar').text(data[4]);
+      $('#titleTotalBienestar').attr('data-target-number', data[4]);
+      $('#titleTotalSalud').text(data[1]);
+      $('#titleTotalSalud').attr('data-target-number', data[1]);
       numbersInitialAnimate();
       $('#authorsTable').DataTable({
         data: data[0],
@@ -1423,7 +1400,6 @@
           { title: "Tipo Id Cliente" },
           { title: "Id Cliente" },
           { title: "Ciudad" },
-          { title: "Placa" },
           { title: "Estado",
             className: "text-center",
             render: function(data, type, row) {
@@ -1436,7 +1412,6 @@
           { title: "Detalles Producto" },
           { title: "Subestado" },
           { title: "Detalle Poliza" },
-          { title: "Fuente" },
           { title: "Acción",
             className: "text-center",
             render: function(data, type, row, meta) {
@@ -1450,7 +1425,7 @@
         order: [],
         lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
         columnDefs: [
-          { targets: [3,5,6,7,8,9,11,12,13,14,15,16,17], visible: false } 
+          { targets: [3,5,6,7,8,9,11,12,13,14,15,16], visible: false } 
         ],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         language: {
@@ -1476,20 +1451,14 @@
   }
 
   function createSecundaryTable(data){
-      $('#titleTotalPremium360').text(data[2]);
-      $('#titleTotalPremium360').attr('data-target-number', data[2]);
-      $('#titleTotalPremium').text(data[3]);
-      $('#titleTotalPremium').attr('data-target-number', data[3]);
-      $('#titleTotalEstandar').text(data[4]);
-      $('#titleTotalEstandar').attr('data-target-number', data[4]);
-      $('#titleTotalClasico').text(data[5]);
-      $('#titleTotalClasico').attr('data-target-number', data[5]);
-      $('#titleTotalLigero').text(data[6]);
-      $('#titleTotalLigero').attr('data-target-number', data[6]);
-      $('#titleTotalVerde').text(data[7]);
-      $('#titleTotalVerde').attr('data-target-number', data[7]);
-      $('#titleTotalAutos').text(data[1]);
-      $('#titleTotalAutos').attr('data-target-number', data[1]);
+      $('#titleTotalMedida').text(data[3]);
+      $('#titleTotalMedida').attr('data-target-number', data[3]);
+      $('#titleTotalIntegral').text(data[2]);
+      $('#titleTotalIntegral').attr('data-target-number', data[2]);
+      $('#titleTotalBienestar').text(data[4]);
+      $('#titleTotalBienestar').attr('data-target-number', data[4]);
+      $('#titleTotalSalud').text(data[1]);
+      $('#titleTotalSalud').attr('data-target-number', data[1]);
       numbersInitialAnimate();
       $('#authorsTable').DataTable({
         data: data[0],
@@ -1530,7 +1499,6 @@
           { title: "Tipo Id Cliente" },
           { title: "Id Cliente" },
           { title: "Ciudad" },
-          { title: "Placa" },
           { title: "Estado",
             className: "text-center",
             render: function(data, type, row) {
@@ -1543,7 +1511,6 @@
           { title: "Detalles Producto" },
           { title: "Subestado" },
           { title: "Detalle Poliza" },
-          { title: "Fuente" },
           { title: "Acción",
             className: "text-center",
             render: function(data, type, row, meta) {
@@ -1557,7 +1524,7 @@
         order: [],
         lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
         columnDefs: [
-          { targets: [3,5,6,7,8,9,11,12,13,14,15,16,17], visible: false } 
+          { targets: [3,5,6,7,8,9,11,12,13,14,15,16], visible: false } 
         ],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         language: {
@@ -1584,88 +1551,76 @@
   }
 
   function createTercerityTable(data){
-    $('#titleTotalPremium360').text(data[2]);
-    $('#titleTotalPremium360').attr('data-target-number', data[2]);
-    $('#titleTotalPremium').text(data[3]);
-    $('#titleTotalPremium').attr('data-target-number', data[3]);
-    $('#titleTotalEstandar').text(data[4]);
-    $('#titleTotalEstandar').attr('data-target-number', data[4]);
-    $('#titleTotalClasico').text(data[5]);
-    $('#titleTotalClasico').attr('data-target-number', data[5]);
-    $('#titleTotalLigero').text(data[6]);
-    $('#titleTotalLigero').attr('data-target-number', data[6]);
-    $('#titleTotalVerde').text(data[7]);
-    $('#titleTotalVerde').attr('data-target-number', data[7]);
-    $('#titleTotalAutos').text(data[1]);
-    $('#titleTotalAutos').attr('data-target-number', data[1]);
+    $('#titleTotalMedida').text(data[3]);
+    $('#titleTotalMedida').attr('data-target-number', data[3]);
+    $('#titleTotalIntegral').text(data[2]);
+    $('#titleTotalIntegral').attr('data-target-number', data[2]);
+    $('#titleTotalBienestar').text(data[4]);
+    $('#titleTotalBienestar').attr('data-target-number', data[4]);
+    $('#titleTotalSalud').text(data[1]);
+    $('#titleTotalSalud').attr('data-target-number', data[1]);
     numbersInitialAnimate();
     $('#authorsTable').DataTable({
-        data: data[0],
-        columns: [
-          { title: "Fecha Radicado",
+      data: data[0],
+      columns: [
+        { title: "Fecha Radicado",
             className: "text-center",
             render: function(data, type, row) {
               return '<p class="text-xs font-weight-bold mb-0">' + data + '</p>';
             } 
-          },
-          { title: "Prioridad",
+        },
+        { title: "Prioridad",
             className: "text-center",
             render: function(data, type, row) {
-              if (data === "Alta") {
+              if (data === "DESISTIDO") {
                 return '<span class="badge badge-sm bg-cards-priority-high">' + data + '</span>';
-              }else if (data === "Media") {
-                return '<span class="badge badge-sm bg-cards-priority-medium">' + data + '</span>';
-              }else if (data === "Baja") {
-                return '<span class="badge badge-sm bg-cards-priority-low">' + data + '</span>';
               }
             } 
-          },
-          { title: "Segmento",
+        },
+        { title: "Segmento",
             className: "text-center",
             render: function(data, type, row) {
               return '<p class="text-xs font-weight-bold mb-0">' + data + '</p>';
             } 
-          },
-          { title: "Id Solicitud" },
-          { title: "Nombre Cliente",
+        },
+        { title: "Id Solicitud" },
+        { title: "Nombre Cliente",
+          className: "text-center",
+            render: function(data, type, row) {
+              return '<p class="text-xs font-weight-bold mb-0">' + data + '</p>';
+          } 
+        },
+        { title: "Teléfono" },
+        { title: "Correo" },
+        { title: "Tipo Id Cliente" },
+        { title: "Id Cliente" },
+        { title: "Ciudad" },
+        { title: "Estado",
             className: "text-center",
             render: function(data, type, row) {
               return '<p class="text-xs font-weight-bold mb-0">' + data + '</p>';
             } 
-          },
-          { title: "Teléfono" },
-          { title: "Correo" },
-          { title: "Tipo Id Cliente" },
-          { title: "Id Cliente" },
-          { title: "Ciudad" },
-          { title: "Placa" },
-          { title: "Estado",
-            className: "text-center",
-            render: function(data, type, row) {
-              return '<p class="text-xs font-weight-bold mb-0">' + data + '</p>';
-            } 
-          },
-          { title: "Línea de Tiempo" },
-          { title: "Comentarios" },
-          { title: "Veces Gestión" },
-          { title: "Detalles Producto" },
-          { title: "Subestado" },
-          { title: "Detalle Poliza" },
-          { title: "Fuente" },
-          { title: "Acción",
-            className: "text-center",
-            render: function(data, type, row, meta) {
-              if (data === "") {
-                return `<button type="button" onclick="managementClient(${meta.row})" class="btn btn-black btn-rounded color-btn-cta-table"><span class="btn-label"><i class="fa-regular fa-hand-pointer px-2"></i></span>Gestionar</button>`;
-              }
-              return data;
+        },
+        { title: "Línea de Tiempo" },
+        { title: "Comentarios" },
+        { title: "Veces Gestión" },
+        { title: "Detalles Producto" },
+        { title: "Subestado" },
+        { title: "Detalle Poliza" },
+        { title: "Acción",
+          className: "text-center",
+          render: function(data, type, row, meta) {
+            if (data === "") {
+              return `<button type="button" onclick="managementClient(${meta.row})" class="btn btn-black btn-rounded color-btn-cta-table"><span class="btn-label"><i class="fa-regular fa-hand-pointer px-2"></i></span>Gestionar</button>`;
+            }
+            return data;
           }
         }
       ],
       order: [],
       lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
       columnDefs: [
-        { targets: [3,5,6,7,8,9,11,12,13,14,15,16,17], visible: false } 
+        { targets: [3,5,6,7,8,9,11,12,13,14,15,16], visible: false } 
       ],
       dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
       language: {
@@ -1691,20 +1646,14 @@
     });
   }
   function createQuaternaryTable(data){
-    $('#titleTotalPremium360').text(data[2]);
-      $('#titleTotalPremium360').attr('data-target-number', data[2]);
-      $('#titleTotalPremium').text(data[3]);
-      $('#titleTotalPremium').attr('data-target-number', data[3]);
-      $('#titleTotalEstandar').text(data[4]);
-      $('#titleTotalEstandar').attr('data-target-number', data[4]);
-      $('#titleTotalClasico').text(data[5]);
-      $('#titleTotalClasico').attr('data-target-number', data[5]);
-      $('#titleTotalLigero').text(data[6]);
-      $('#titleTotalLigero').attr('data-target-number', data[6]);
-      $('#titleTotalVerde').text(data[7]);
-      $('#titleTotalVerde').attr('data-target-number', data[7]);
-      $('#titleTotalAutos').text(data[1]);
-      $('#titleTotalAutos').attr('data-target-number', data[1]);
+      $('#titleTotalMedida').text(data[3]);
+      $('#titleTotalMedida').attr('data-target-number', data[3]);
+      $('#titleTotalIntegral').text(data[2]);
+      $('#titleTotalIntegral').attr('data-target-number', data[2]);
+      $('#titleTotalBienestar').text(data[4]);
+      $('#titleTotalBienestar').attr('data-target-number', data[4]);
+      $('#titleTotalSalud').text(data[1]);
+      $('#titleTotalSalud').attr('data-target-number', data[1]);
       numbersInitialAnimate();
       $('#authorsTable').DataTable({
         data: data[0],
@@ -1745,7 +1694,6 @@
           { title: "Tipo Id Cliente" },
           { title: "Id Cliente" },
           { title: "Ciudad" },
-          { title: "Placa" },
           { title: "Estado",
             className: "text-center",
             render: function(data, type, row) {
@@ -1758,7 +1706,6 @@
           { title: "Detalles Producto" },
           { title: "Subestado" },
           { title: "Detalle Poliza" },
-          { title: "Fuente" },
           { title: "Acción",
             className: "text-center",
             render: function(data, type, row, meta) {
@@ -1772,7 +1719,7 @@
         order: [],
         lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
         columnDefs: [
-          { targets: [3,5,6,7,8,9,11,12,13,14,15,16,17], visible: false } 
+          { targets: [3,5,6,7,8,9,11,12,13,14,15,16], visible: false } 
         ],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         language: {
@@ -1957,14 +1904,14 @@
     $("#phone_client").val(rowData[5]);
     $("#name_client").val(rowData[4]);
     $("#email_client").val(rowData[6]);
-    $("#btn_veces_gestion").html('Veces Gestionado: '+rowData[14])
-    let dataTimeLine = JSON.parse(rowData[12]);
-    if(rowData[17]){
-      dataPolizas = JSON.parse(rowData[17])
+    $("#btn_veces_gestion").html('Veces Gestionado: '+rowData[13])
+    let dataTimeLine = JSON.parse(rowData[11]);
+    if(rowData[16]){
+      dataPolizas = JSON.parse(rowData[16])
     }
     $("#requestTimeLine").empty();
-    if(rowData[15] != ''){
-      let dataProduct = JSON.parse(rowData[15]);
+    if(rowData[14] != ''){
+      let dataProduct = JSON.parse(rowData[14]);
 
       if (dataProduct.poliza_type !== null && typeof dataProduct.poliza_type !== 'undefined') {
         $('#typePoliza').val(dataProduct.poliza_type).trigger('change');
@@ -1977,7 +1924,7 @@
         $('#container_detailsPlanPoliza').removeAttr('hidden');
       }
       if (dataProduct.got_EPS !== null && typeof dataProduct.got_EPS !== 'undefined') {
-        $('#placa_client').val(dataProduct.got_EPS);
+        $('#getEPS').val(dataProduct.got_EPS);
       }
       if (dataProduct.quoting_for !== null && typeof dataProduct.quoting_for !== 'undefined' && dataProduct.quoting_for.length > 0) {
         $('#ObjectMultiple').val(dataProduct.quoting_for).trigger('change');
@@ -1985,6 +1932,9 @@
         $('#ObjectMultiple').val(null).trigger('change');
       }
 
+      if (dataProduct.over_60 !== null && typeof dataProduct.over_60 !== 'undefined') {
+        $('#havemore60').val(dataProduct.over_60);
+      }
     }
     
     dataTimeLine.forEach(row =>{
@@ -2041,8 +1991,8 @@
         }
       });
     }
-    let status = rowData[11];
-    let substatus = rowData[16];
+    let status = rowData[10];
+    let substatus = rowData[15];
     setDecisionTreeState(status, substatus)
     $('#clientModal').modal({
       backdrop: 'static',

@@ -105,12 +105,6 @@
             errorMessage = 'Por favor selecciona un tipo de producto.';
           }
         break;
-        case 'modalReferidosPlaca':
-          if (!value) {
-            isValid = false;
-            errorMessage = 'Por favor ingresa una placa válida';
-          }
-        break;
         case 'modalReferidosFuenteReferido':
           if (!value) {
             isValid = false;
@@ -263,18 +257,12 @@
     });
 
     function createPrimaryTable(data){
-      $('#titleTotalPremium+360').text(data[2]);
-      $('#titleTotalPremium+360').attr('data-target-number', data[2]);
-      $('#titleTotalPremium').text(data[3]);
-      $('#titleTotalPremium').attr('data-target-number', data[3]);
-      $('#titleTotalEstandar').text(data[4]);
-      $('#titleTotalEstandar').attr('data-target-number', data[4]);
-      $('#titleTotalEstandar').text(data[5]);
-      $('#titleTotalEstandar').attr('data-target-number', data[5]);
-      $('#titleTotalClasico').text(data[6]);
-      $('#titleTotalClasico').attr('data-target-number', data[6]);
-      $('#titleTotalClasico').text(data[7]);
-      $('#titleTotalClasico').attr('data-target-number', data[7]);
+      $('#titleTotalMedida').text(data[2]);
+      $('#titleTotalMedida').attr('data-target-number', data[2]);
+      $('#titleTotalIntegral').text(data[3]);
+      $('#titleTotalIntegral').attr('data-target-number', data[3]);
+      $('#titleTotalBienestar').text(data[4]);
+      $('#titleTotalBienestar').attr('data-target-number', data[4]);
       $('#titleTotalSalud').text(data[1]);
       $('#titleTotalSalud').attr('data-target-number', data[1]);
       numbersInitialAnimate();
@@ -317,7 +305,6 @@
           { title: "Tipo Id Cliente" },
           { title: "Id Cliente" },
           { title: "Ciudad" },
-          { title: "Placa" },
           { title: "Estado",
             className: "text-center",
             render: function(data, type, row) {
@@ -330,7 +317,6 @@
           { title: "Detalles Producto" },
           { title: "Subestado" },
           { title: "Detalle Poliza" },
-          { title: "Fuente" },
           { title: "Acción",
             className: "text-center",
             render: function(data, type, row, meta) {
@@ -344,7 +330,7 @@
         order: [],
         lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
         columnDefs: [
-          { targets: [3,5,6,7,8,9,11,12,13,14,15,16,17], visible: false } 
+          { targets: [3,5,6,7,8,9,11,12,13,14,15,16], visible: false } 
         ],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         language: {
@@ -367,7 +353,7 @@
           $('.dataTables_paginate .pagination').addClass('pagination-sm');
         }
       });
-  }
+    }
 
     function numbersInitialAnimate(){
       gsap.from(".modern-card", {
