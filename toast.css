@@ -1,0 +1,193 @@
+<style>
+  /* Estilos Modernos para Toastr.js - Corregidos para evitar conflictos */
+  /* Contenedor principal de los toasts */
+  #toast-container>div {
+    background-image: none !important;
+    padding: 0 !important;
+    opacity: 0.95 !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    width: 350px !important;
+    max-width: 90% !important;
+    pointer-events: auto !important;
+  }
+
+  /* Ocultar iconos por defecto de toastr */
+  #toast-container>div.toast-modern>.toast-message {
+    padding-left: 0 !important;
+    background-image: none !important;
+  }
+
+  /* Contenedor interno para el contenido del toast */
+  .toast-modern-content-wrapper {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  /* Icono del Toast */
+  .toast-modern-icon {
+    flex-shrink: 0;
+    margin-right: 12px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .toast-modern-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Contenedor para título y mensaje */
+  .toast-modern-text-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Título del Toast */
+  .toast-modern-title {
+    font-weight: 600 !important;
+    font-size: 15px !important;
+    color: #1a1a1a !important;
+    margin-bottom: 4px !important;
+  }
+
+  /* Mensaje del Toast */
+  .toast-modern-message {
+    font-size: 14px !important;
+    color: #555 !important;
+    line-height: 1.4 !important;
+  }
+
+  /* Botón de cierre (si está habilitado) */
+  .toast-modern .toast-close-button {
+    font-size: 22px !important;
+    font-weight: 300 !important;
+    color: #aaa !important;
+    text-shadow: none !important;
+    opacity: 0.8 !important;
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+  }
+
+  .toast-modern .toast-close-button:hover {
+    color: #333 !important;
+    opacity: 1 !important;
+  }
+
+  /* Barra de progreso (si está habilitada) */
+  .toast-modern .toast-progress {
+    height: 4px !important;
+    border-radius: 0 0 11px 11px !important;
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  /* Estilos específicos por tipo de notificación */
+  /* Success */
+  #toast-container>div.toast-success {
+    background-color: #F0FFF4 !important;
+    border-left: 5px solid #48BB78 !important;
+  }
+
+  .toast-success .toast-modern-icon {
+    background-color: #48BB78;
+  }
+
+  .toast-success .toast-modern-icon svg path {
+    fill: #fff;
+  }
+
+  .toast-success .toast-modern-title {
+    color: #2F855A !important;
+  }
+
+  .toast-success .toast-progress {
+    background-color: #48BB78 !important;
+  }
+
+  /* Error */
+  #toast-container>div.toast-error {
+    background-color: #FFF5F5 !important;
+    border-left: 5px solid #F56565 !important;
+  }
+
+  .toast-error .toast-modern-icon {
+    background-color: #F56565;
+  }
+
+  .toast-error .toast-modern-icon svg path {
+    fill: #fff;
+  }
+
+  .toast-error .toast-modern-title {
+    color: #C53030 !important;
+  }
+
+  .toast-error .toast-progress {
+    background-color: #F56565 !important;
+  }
+
+  /* Info */
+  #toast-container>div.toast-info {
+    background-color: #EBF8FF !important;
+    border-left: 5px solid #4299E1 !important;
+  }
+
+  .toast-info .toast-modern-icon {
+    background-color: #4299E1;
+  }
+
+  .toast-info .toast-modern-icon svg path {
+    fill: #fff;
+  }
+
+  .toast-info .toast-modern-title {
+    color: #2B6CB0 !important;
+  }
+
+  .toast-info .toast-progress {
+    background-color: #4299E1 !important;
+  }
+
+  /* Warning */
+  #toast-container>div.toast-warning {
+    background-color: #FFFBEB !important;
+    border-left: 5px solid #ED8936 !important;
+  }
+
+  .toast-warning .toast-modern-icon {
+    background-color: #ED8936;
+  }
+
+  .toast-warning .toast-modern-icon svg path {
+    fill: #fff;
+  }
+
+  .toast-modern.toast-warning .toast-modern-title {
+    color: #B7791F !important;
+  }
+
+  .toast-modern.toast-warning .toast-progress {
+    background-color: #ED8936 !important;
+  }
+
+  #toast-container>.toast-success .toast-warning{
+    background-image: none!important;
+  }
+
+</style>

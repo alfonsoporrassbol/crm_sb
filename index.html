@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <title>
+    Argon Dashboard 3 by Creative Tim
+  </title>
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <!-- Nucleo Icons -->
+  <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="https://demos.creative-tim.com/argon-dashboard-pro/assets/css/nucleo-svg.css" rel="stylesheet" />
+  <!-- Font Awesome Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.datatables.net/v/bs5/jszip-3.10.1/dt-2.0.8/b-3.0.8/b-html5-2.0.8/datatables.min.css"
+    rel="stylesheet">
+  <!-- Google Fonts: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <?!= include("styles.css");?>
+  <?!= include("modernModal.css");?>
+  <?!= include("sweetAlert2.js");?>
+  <?!= include("toast.css");?>
+  <?!= include("toast.js");?>
+  <?!= include("modernLogin.css");?>
+  <?!= include("main.js");?>
+  <?!= include("scriptLogin.js");?>
+  <?!= include("modal_Referidos.css");?>
+  <?!= include("modal_Referidos.js");?>
+
+</head>
+
+<body class="g-sidenav-show   bg-gray-100">
+  <div class="min-height-300 bg-dark position-absolute w-100"></div>
+  <aside
+    class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4 "
+    id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0">
+        <img src="https://seeklogo.com/images/S/seguros-bolivar-logo-62942CED49-seeklogo.com.png" class="navbar-brand-img h-100" alt="main_logo" style="width: 100%;">
+      </a>
+    </div>
+    <hr class="horizontal dark mt-0">
+    <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" id="section_Pendientes">
+            <div
+              class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fa-solid fa-phone-volume fa-fw text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Pendientes Gestión</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " id="section_Seguimiento">
+            <div
+              class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fa-solid fa-magnifying-glass fa-fw text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Seguimiento Leads</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " id="section_Commercial_Intent">
+            <div
+              class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fa-solid fa-file-signature fa-fw text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Intención Comercial</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " id="section_Desistidos">
+            <div
+              class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-user-times fa-fw text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Desistidos</span>
+          </a>
+        </li>
+        <li class="nav-item" id="nav-item-piezas" hidden>
+          <a class="nav-link " id="section_Piezas">
+            <div
+              class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-solid fa-file-code fa-fw text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Piezas</span>
+          </a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link " id="section_Desistidos">
+            <div
+              class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fa-solid fa-magnifying-glass-chart fa-fw text-dark text-sm opacity-10"></i>
+            </div>
+            <span class="nav-link-text ms-1">Cargue Propensión</span>
+          </a>
+        </li> -->
+      </ul>
+    </div>
+    <div class="sidenav-footer mx-3 ">
+      <a class="btn btn-primary btn-sm mb-0 w-100" type="button" id="create_New_Client">Crear Cliente</a>
+    </div>
+  </aside>
+  <main class="main-content position-relative border-radius-lg ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur"
+      data-scroll="false">
+      <div class="container-fluid py-1 px-3">
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 justify-content-end" id="navbar">
+          <ul class="navbar-nav  justify-content-end">
+            <li class="nav-item d-flex align-items-center">
+              <a class="nav-link text-white font-weight-bold px-0">
+                <i class="fa fa-user me-sm-1"></i>
+                <span id='name_Active_User' class="d-sm-inline d-none"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+      <div class="row flex-nowrap overflow-auto gx-3">
+        <div class="col-xl-2 col-md-6 col-sm-4 mb-xl-0 mb-4">
+          <div class="card modern-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold font-titles">PD</p>
+                    <h5 id="titleTotalPremium360" class="font-weight-bolder" data-target-number="">
+                    </h5>
+                    <p class="mb-0">
+                      <span class="text-success text-sm font-weight-bolder">Premium+360</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon-container icon-success-gradient shadow text-center rounded-circle">
+                    <i class="fa-solid fa-car-side fs-4 opacity-10"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+          <div class="card modern-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold font-titles">PD</p>
+                    <h5 id="titleTotalPremium" class="font-weight-bolder" data-target-number="">
+                    </h5>
+                    <p class="mb-0">
+                      <span class="text-success text-sm font-weight-bolder">Premium</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon-container icon-success-gradient shadow text-center rounded-circle">
+                    <i class="fa-solid fa-car-on fs-4 opacity-10"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+          <div class="card modern-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold">PD</p>
+                    <h5 id="titleTotalEstandar" class="font-weight-bolder" data-target-number="">
+                    </h5>
+                    <p class="mb-0">
+                      <span class="text-success text-sm font-weight-bolder">Estándar</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon-container icon-info-gradient shadow text-center rounded-circle">
+                    <i class="fa-solid fa-car-tunnel fs-4 opacity-10"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+          <div class="card modern-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold">PD</p>
+                    <h5 id="titleTotalClasico" class="font-weight-bolder" data-target-number="">
+                    </h5>
+                    <p class="mb-0">
+                      <span class="text-success text-sm font-weight-bolder">Clásico</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon-container icon-info-gradient shadow text-center rounded-circle">
+                    <i class="fa-solid fa-car-rear fs-4 opacity-10"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+          <div class="card modern-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold">PD</p>
+                    <h5 id="titleTotalLigero" class="font-weight-bolder" data-target-number="">
+                    </h5>
+                    <p class="mb-0">
+                      <span class="text-success text-sm font-weight-bolder">Ligero</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon-container icon-info-gradient shadow text-center rounded-circle">
+                    <i class="fa-solid fa-car fs-4 opacity-10"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+          <div class="card modern-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold">PD</p>
+                    <h5 id="titleTotalVerde" class="font-weight-bolder" data-target-number="">
+                    </h5>
+                    <p class="mb-0">
+                      <span class="text-success text-sm font-weight-bolder">Verde</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon-container icon-info-gradient shadow text-center rounded-circle">
+                    <i class="fa-solid fa-leaf fs-4 opacity-10"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+          <div class="card modern-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p id="title_card_totals" class="text-sm mb-0 text-danger text-uppercase font-weight-bold">PD</p>
+                    <h5 id="titleTotalAutos" class="font-weight-bolder" data-target-number="">
+                    </h5>
+                    <p class="mb-0">
+                      <span class="text-success text-sm font-weight-bolder">Leads Autos</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon-container icon-danger-gradient shadow text-center rounded-circle">
+                    <i class="fa-solid fa-database fs-4 opacity-10" aria-hidden="true"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="container-principal" class="container-fluid py-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="card mb-4">
+              <!-- <div class="card-header pb-0">
+                <h6>Authors table</h6>
+              </div> -->
+              <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                  <table id="authorsTable" class="table align-items-center mb-0 table-hover">
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Cards HTML -->
+      <div id="container-cards" class="container pt-7" style="display: none;">
+        <div class="text-center mb-4">
+          <h2 class="section-title">Mis Plantillas</h2>
+        </div>
+        <div id="template-cards-container" class="row g-4"></div>
+      </div>
+
+      <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+      </div>
+
+      <div id="editor-overlay" class="editor-overlay">
+        <div id="editor-modal" class="editor-modal">
+          <header class="editor-header">
+            <h4 id="editor-title" class="editor-title mb-0"></h4>
+            <button id="editor-close" class="editor-close-btn">&times;</button>
+          </header>
+          <main class="editor-main">
+            <aside id="logo-editor-panel">
+              <div class="content-wrapper">
+                <h5>Editar Logo</h5>
+                <div class="link-editor-item">
+                  <label class="link-editor-label">Cargar desde URL</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" id="logo-url-input" placeholder="https://ejemplo.com/logo.png">
+                  </div>
+                </div>
+                <div class="link-editor-item text-center">
+                  <label class="link-editor-label mb-3">Cargar desde archivo</label>
+                  <button class="btn btn-secondary btn-file">
+                    <i class="fas fa-upload me-2"></i> Seleccionar archivo
+                    <input type="file" id="logo-file-input" accept="image/*">
+                  </button>
+                </div>
+                <div id="logo-preview-container">
+                  <img id="logo-preview" src="" alt="Vista previa del logo" style="display:none;">
+                </div>
+                <button class="btn btn-success w-100" id="apply-logo-btn">
+                  <i class="fas fa-check me-2"></i>Aplicar Logo
+                </button>
+                <button class="btn btn-success w-100" id="btnDescargarPieza">
+                  <i class="fa-solid fa-download me-2"></i>Descargar Pieza
+                </button>
+                <div id="logo-size-controls" style="display:none;" class="link-editor-item mt-3">
+                  <div class="mb-2">
+                    <label for="logo-width-slider" class="form-label d-flex justify-content-between">
+                      <span>Ancho</span>
+                      <span id="logo-width-value">auto</span>
+                    </label>
+                    <input type="range" class="form-range" min="20" max="600" id="logo-width-slider">
+                  </div>
+                  <div class="mb-3">
+                    <label for="logo-height-slider" class="form-label d-flex justify-content-between">
+                      <span>Alto</span>
+                      <span id="logo-height-value">auto</span>
+                    </label>
+                    <input type="range" class="form-range" min="20" max="400" id="logo-height-slider">
+                  </div>
+                  <!--                   <div class="mb-2">
+                    <label for="logo-top-slider" class="form-label d-flex justify-content-between">
+                      <span>Posición Vertical</span>
+                      <span id="logo-top-value">0px</span>
+                    </label>
+                    <input type="range" class="form-range" min="0" max="500" value="0" id="logo-top-slider">
+                  </div>
+                  <div class="mb-3">
+                    <label for="logo-left-slider" class="form-label d-flex justify-content-between">
+                      <span>Posición Horizontal</span>
+                      <span id="logo-left-value">0px</span>
+                    </label>
+                    <input type="range" class="form-range" min="0" max="500" value="0" id="logo-left-slider">
+                  </div> -->
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="aspect-ratio-toggle" checked>
+                    <label class="form-check-label" for="aspect-ratio-toggle">
+                      Mantener relación de aspecto
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </aside>
+            <!-- Panel de previsualización de la plantilla -->
+            <section id="editor-preview-panel">
+              <iframe id="html-preview-iframe" frameborder="0"></iframe>
+            </section>
+          </main>
+        </div>
+      </div>
+      <!-- Fin Cards HTML -->
+      <footer class="footer pt-3  ">
+        <div class="container-fluid">
+          <div class="row align-items-center justify-content-lg-between">
+            <div class="col-lg-12 mb-lg-0 mb-12 justify-content-end">
+              <div class="copyright text-center text-sm text-muted text-lg-start">
+                © <script>
+                  document.write(new Date().getFullYear())
+                </script>,
+                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Mercadeo Seguros
+                  Bolívar</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </main>
+  <!-- Modal Moderno con Árbol Jerárquico -->
+  <div class="modal fade" id="clientModal" tabindex="-1" aria-labelledby="clientModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl modal-modern">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="clientModalLabel">
+            <i class="fas fa-user-circle me-2"></i>Gestión de Cliente
+          </h5>
+          <div class="header-actions">
+            <button type="button" class="btn-header-action btn-timeLine" id="btntimeLine">
+              <i class="fa-solid fa-timeline"></i>Línea de Tiempo
+            </button>
+            <button type="button" class="btn-header-action btn-reminder" id="btnReminder">
+              <i class="fas fa-bell"></i>Recordatorio
+            </button>
+            <button type="button" class="btn-header-action btn-history" id="btnHistory">
+              <i class="fas fa-history"></i>Historial
+            </button>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-left-column">
+            <div id="clientInfoView">
+              <div style="display:flex">
+                <h6 class="mb-3 text-muted" style="font-size: 0.8rem;">INFORMACIÓN DEL CLIENTE</h6>
+                <button type="button" class="btn-header-action btn-reminder" id="btn_veces_gestion" style="margin-left: 20px;margin-top: -8px;border-radius: 25px;background-color: #B2EADC;color: #3d1212;height: 30px;">
+              <i class="fa-solid fa-circle-exclamation"></i>
+            </button>
+              </div>
+              <div class="row">
+                <div class="col-md-4 col-12">
+                  <div class="info-field">
+                    <label class="info-field-label">Tipo de documento</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fas fa-id-card"></i>
+                      </div>
+                    </div>
+                    <select class="form-select" id="type_id_client" name="type_id_client">
+                      <option selected disabled hidden>Seleccione</option>
+                      <option value="Cédula de ciudadanía">Cédula de ciudadanía</option>
+                      <option value="Cédula de Extranjería">Cédula de extranjería</option>
+                      <option value="Tarjeta de Identidad">Tarjeta de identidad</option>
+                      <option value="Pasaporte">Pasaporte</option>
+                      <option value="NIT">NIT</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Número de documento - Input number -->
+                <div class="col-md-4 col-12">
+                  <div class="info-field">
+                    <label class="info-field-label">Número de documento</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fas fa-hashtag"></i>
+                      </div>
+                    </div>
+                    <input id="id_client" name="id_client" type="number" class="form-control" placeholder="Ingrese número de documento">
+                  </div>
+                </div>
+                <!-- Celular - Input number -->
+                <div class="col-md-4 col-12">
+                  <div class="info-field">
+                    <label class="info-field-label">Número de celular</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fas fa-mobile-alt"></i>
+                      </div>
+                    </div>
+                    <input id="phone_client" name="phone_client" type="number" class="form-control" placeholder="Ingrese número de celular">
+                  </div>
+                </div>
+                <!-- Nombre del cliente - Input text -->
+                <div class="col-md-6 col-12">
+                  <div class="info-field">
+                    <label class="info-field-label">Nombre del cliente</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fas fa-user"></i>
+                      </div>
+                    </div>
+                    <input id="name_client" name="name_client" type="text" class="form-control" placeholder="Ingrese nombre completo">
+                  </div>
+                </div>
+                <!-- Correo - Input mail -->
+                <div class="col-md-6 col-12">
+                  <div class="info-field">
+                    <label class="info-field-label">Correo electrónico</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fas fa-envelope"></i>
+                      </div>
+                    </div>
+                    <input id="email_client" name="email_client" type="email" class="form-control" placeholder="ejemplo@correo.com">
+                  </div>
+                </div>
+                <!-- Tipo de póliza - Select -->
+                <div class="col-md-4 col-12">
+                  <div class="info-field">
+                    <label class="info-field-label">Tipo de póliza</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fas fa-file-contract"></i>
+                      </div>
+                    </div>
+                    <select id="typePoliza" name="typePoliza" class="form-select">
+                      <option value="" selected disabled hidden>Seleccione</option>
+                      <option value="Individual">Individual</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Producto Autos - Select -->
+                <div class="col-md-4 col-12">
+                  <div class="info-field">
+                    <label class="info-field-label">Producto Autos</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fa-solid fa-suitcase-medical"></i>
+                      </div>
+                    </div>
+                    <select id="detailsPoliza" name="detailsPoliza" class="form-select">
+                      <option value="" selected disabled hidden>⚠️Seleccione Tipo</option>
+                    </select>
+                  </div>
+                </div>
+                <!-- Detalle Producto - Select -->
+                <div id="container_detailsPlanPoliza" class="col-md-4 col-12" hidden>
+                  <div class="info-field">
+                    <label class="info-field-label">Detalle Plan Autos</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fa-solid fa-suitcase-medical"></i>
+                      </div>
+                    </div>
+                    <select id="detailsPlanPoliza" name="detailsPlanPoliza" class="form-select">
+                    </select>
+                  </div>
+                </div>
+                <!-- Placa del cliente - Input text -->
+                <div class="col-md-6 col-12">
+                  <div class="info-field">
+                    <label class="info-field-label">Placa del cliente</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fas fa-user"></i>
+                      </div>
+                    </div>
+                    <input id="placa_client" name="placa_client" type="text" class="form-control" placeholder="Ingrese placa sin espacios">
+                  </div>
+                </div>
+
+                <!-- Para Quién Cotiza? - Select -->
+                <div class="col-md-8 col-12">
+                  <div class="info-field">
+                    <label class="info-field-label">¿Para quién esta cotizando?</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fa-solid fa-people-roof"></i>
+                      </div>
+                    </div>
+                    <select id="ObjectMultiple" name="ObjectMultiple" class="form-select select2-multiple" multiple>
+                      <option value="Para mi">Para mi</option>
+                      <option value="Para mi pareja">Para mi pareja</option>
+                      <option value="Para mis hijos">Para mis hijos</option>
+                      <option value="Para mis padres">Para mis padres</option>
+                      <option value="Otros familiares">Otros familiares</option>
+                    </select>
+                  </div>
+                </div>
+                </div>
+                
+              </div>
+            </div>
+
+            <!-- Vista de Historial -->
+            <div id="historyView" style="display: none;">
+              <div class="history-view" style="display: flex;">
+                <div class="history-header">
+                  <div class="history-title">
+                    <i class="fas fa-history"></i> Historial de Gestión
+                  </div>
+                  <button type="button" class="btn-modern btn-modern-outline" id="btnVolverHistorial">
+                    <i class="fas fa-arrow-left me-1"></i> Volver
+                  </button>
+                </div>
+                <div class="history-body">
+                  <div class="chat-container">
+                    <div class="chat-message">
+                      <div class="chat-avatar"><i class="fa-solid fa-robot"></i></div>
+                      <div class="chat-bubble">
+                        <div class="chat-info">
+                          <div class="chat-sender">Sistema</div>
+                        </div>
+                        <div class="chat-content">
+                          No se han creado comentarios o gestión sobre el caso.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vista de Recordatorio -->
+            <div id="reminderView" style="display: none;">
+              <div class="reminder-view" style="display: flex;">
+                <div class="reminder-header">
+                  <div class="reminder-title">
+                    📅 Agenda tu Recordatorio
+                  </div>
+                  <button type="button" class="btn-modern btn-modern-outline" id="btnVolverRecordatorio">
+                    <i class="fas fa-arrow-left me-1"></i> Volver
+                  </button>
+                </div>
+                <div class="reminder-body">
+                  <div class="calendar-container">
+                    <div id="reminderCalendar"></div>
+                  </div>
+                  <button type="button" id="btn_create_event_user" class="btn btn-modern btn-modern-primary w-100">
+                    <i class="fas fa-save me-1"></i> Guardar Recordatorio
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Línea de tiempo -->
+            <div id="timeLineView" style="display: none;">
+              <div class="timeLine-view" style="display: flex;">
+                <div class="timeLine-header">
+                  <div class="timeLine-title">
+                    ⏱️ Línea del Tiempo
+                  </div>
+                  <button type="button" class="btn-modern btn-modern-outline" id="btnVolverLineaTiempo">
+                    <i class="fas fa-arrow-left me-1"></i> Volver
+                  </button>
+                </div>
+                <div class="timeLine-body">
+                  <div id="requestTimeLine" class="timeline">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna Derecha - Árbol de Decisión Jerárquico -->
+          <div class="modal-right-column">
+            <div class="decision-tree">
+              <div class="decision-tree-header">
+                <i class="fas fa-sitemap me-2"></i> Árbol de Decisión
+              </div>
+              <div class="decision-tree-body">
+
+                <!-- Nodo 1: ¿Cliente contactado? -->
+                <div class="tree-node" id="node-contactado">
+                  <div class="tree-node-title">
+                    <div class="tree-node-number">1</div>
+                    ¿Cliente contactado?
+                  </div>
+                  <div class="tree-node-content">
+                    <select class="form-select form-select-sm active_Select2" id="contactado">
+                      <option selected disabled hidden>Seleccione una opción</option>
+                      <option value="si">Sí</option>
+                      <option value="no">No</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Nodo 2: Contacto = No → Contacto No Exitoso / Pendiente -->
+                <div class="tree-node hidden" id="node-contacto-no-exitoso">
+                  <div class="tree-node-title">
+                    <div class="tree-node-number">2</div>
+                    Motivo de no contacto
+                  </div>
+                  <div class="tree-node-content">
+                    <select class="form-select form-select-sm active_Select2" id="motivo-no-contacto">
+                      <option value="">Seleccione una opción</option>
+                      <option value="No contesta">No contesta</option>
+                      <option value="Fuera servicio">Teléfono fuera de servicio</option>
+                      <option value="Mensaje tercero">Mensaje con tercero o Buzón</option>
+                      <option value="Cliente cuelga">Cliente cuelga la llamada</option>
+                      <option value="No conocen al cliente">No conocen al cliente</option>
+                      <option value="Volver llamar seguimiento">Volver a llamar - En seguimiento</option>
+                      <option value="No gestionado">No gestionado</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Nodo 2: Contacto = Sí → Resultado del contacto -->
+                <div class="tree-node hidden" id="node-contacto-si">
+                  <div class="tree-node-title">
+                    <div class="tree-node-number">2</div>
+                    Resultado del contacto
+                  </div>
+                  <div class="tree-node-content">
+                    <select class="form-select form-select-sm active_Select2" id="resultado-contacto">
+                      <option value="">Seleccione una opción</option>
+                      <option value="Acepta">Acepta</option>
+                      <option value="No Acepta">No Acepta</option>
+                      <option value="Volver a Contactar">Volver a Contactar</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Nodo 3: Volver a Contactar → Callbacks -->
+                <div class="tree-node hidden" id="node-callbacks">
+                  <div class="tree-node-title">
+                    <div class="tree-node-number">3</div>
+                    Gestión de contacto
+                  </div>
+                  <div class="tree-node-content">
+                    <select class="form-select form-select-sm active_Select2" id="gestion-contacto">
+                      <option value="">Seleccione una opción</option>
+                      <option value="Llamar en la mañana">Llamar en la mañana</option>
+                      <option value="Llamar en la tarde">Llamar en la tarde</option>
+                      <option value="Regresar Llamada">Regresar Llamada</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Nodo 3: No Acepta → Motivos de rechazo -->
+                <div class="tree-node hidden" id="node-motivo-no-aceptacion">
+                  <div class="tree-node-title">
+                    <div class="tree-node-number">3</div>
+                    Motivo de no aceptación
+                  </div>
+                  <div class="tree-node-content">
+                    <select class="form-select form-select-sm active_Select2" id="motivo-no-aceptacion">
+                      <option value="">Seleccione una opción</option>
+                      <option value="No escucha propuesta">No escucha propuesta</option>
+                      <option value="No aplica condiciones de producto">No aplica condiciones de producto</option>
+                      <option value="Muy costoso">Muy costoso</option>
+                      <option value="No le interesa">No le interesa</option>
+                      <option value="No es la persona que tomará el seguro">No es la persona que tomará el seguro</option>
+                      <option value="Se va con otra compañía por precio">Se va con otra compañía por precio</option>
+                      <option value="Aumento en el valor de la renovación">Aumento en el valor de la renovación</option>
+                      <option value="Póliza con otra compañía">Póliza con otra compañía</option>
+                      <option value="Póliza con Bolívar">Póliza con Bolívar</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Nodo 4: Motivo detallado por rechazo -->
+                <div class="tree-node hidden" id="node-motivo-detallado">
+                  <div class="tree-node-title">
+                    <div class="tree-node-number">4</div>
+                    Detalle del motivo de rechazo
+                  </div>
+                  <div class="tree-node-content">
+                    <select class="form-select form-select-sm active_Select2" id="motivo-detallado">
+                      <option value="">Seleccione una opción</option>
+                      <!-- Opciones dinámicas según selección anterior -->
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Nodo 3: Acepta → Acciones posibles -->
+                <div class="tree-node hidden" id="node-estado-gestion">
+                  <div class="tree-node-title">
+                    <div class="tree-node-number">3</div>
+                    Estado de la gestión
+                  </div>
+                  <div class="tree-node-content">
+                    <select class="form-select form-select-sm active_Select2" id="estado-gestion">
+                      <option value="">Seleccione una opción</option>
+                      <option value="Escuchó oferta">Escuchó oferta</option>
+                      <option value="Evaluando propuesta">Evaluando propuesta</option>
+                      <option value="Cotizó">Cotizó</option>
+                      <option value="Venta / Emisión">Venta / Emisión</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div id="policy-section" hidden>
+                  <div class="policy-section-header">
+                    <h6 class="text-muted"><i class="fas fa-file-contract me-2"></i>PÓLIZAS ADQUIRIDAS</h6>
+                    <button type="button" class="btn btn-add-policy" id="add-policy-btn">
+                      <i class="fas fa-plus me-2"></i>Agregar Póliza
+                    </button>
+                  </div>
+                  <div id="policy-list">
+                  </div>
+                </div>
+
+                <!-- Nodo 5: Observaciones -->
+                <div class="tree-node hidden" id="node-observaciones">
+                  <div class="tree-node-title">
+                    <div class="tree-node-number">✍️</div>
+                    Observaciones
+                  </div>
+                  <div class="tree-node-content">
+                    <textarea class="form-control" id="requestObservation" name="requestObservation"></textarea>
+                  </div>
+                </div>
+
+                <!-- Botón de guardar gestión -->
+                <button type="button" class="btn btn-modern btn-modern-primary btn-save-gestion">
+                  <i class="fas fa-save me-1"></i> Guardar Gestión
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal moderno -->
+  <div class="modal-referidos-overlay modal-referidos-vars" id="modalReferidosOverlay"
+    onclick="closeModalOnOverlay(event)">
+    <div class="modal-referidos-container" onclick="event.stopPropagation()">
+      <!-- Header -->
+      <div class="modal-referidos-header">
+        <h2 class="modal-referidos-title">
+          <i data-lucide="shield-check"></i>
+          Nuevo Cliente de Seguros
+        </h2>
+        <button class="modal-referidos-close" aria-label="Cerrar modal"><i data-lucide="x"></i>
+        </button>
+      </div>
+
+      <!-- Cuerpo del modal -->
+      <form id="modalReferidosClientForm" class="modal-referidos-client-form">
+        <div class="modal-referidos-body">
+          <!-- Formulario -->
+
+          <!-- Tipo de documento -->
+          <div class="modal-referidos-form-group">
+            <label for="modalReferidosTipoDocumento" class="modal-referidos-form-label">Tipo de Documento</label>
+            <select id="modalReferidosTipoDocumento" name="modalReferidosTipoDocumento" class="modal-referidos-form-select" required>
+              <option value="">Selecciona el tipo de documento</option>
+              <option value="Cédula de ciudadanía">Cédula de Ciudadanía</option>
+              <option value="Cédula de extranjería">Cédula de Extranjería</option>
+              <option value="Pasaporte">Pasaporte</option>
+              <option value="Tarjeta de identidad">Tarjeta de Identidad</option>
+            </select>
+            <div class="modal-referidos-error-message" id="modal-referidos-error-modalReferidosTipoDocumento"></div>
+          </div>
+
+          <!-- Número de documento -->
+          <div class="modal-referidos-form-group">
+            <label for="modalReferidosNumeroDocumento" class="modal-referidos-form-label">Número de Documento</label>
+            <div class="modal-referidos-input-with-icon">
+              <input type="text" id="modalReferidosNumeroDocumento" name="modalReferidosNumeroDocumento" class="modal-referidos-form-input" placeholder="Ingresa el número de documento" required pattern="[0-9]{6,12}" maxlength="12">
+              <i data-lucide="hash" class="modal-referidos-input-icon"></i>
+            </div>
+            <div class="modal-referidos-error-message" id="modal-referidos-error-modalReferidosNumeroDocumento"></div>
+          </div>
+
+          <!-- Nombre completo -->
+          <div class="modal-referidos-form-group">
+            <label for="modalReferidosNombreCliente" class="modal-referidos-form-label">Nombre Completo</label>
+            <div class="modal-referidos-input-with-icon">
+              <input type="text" id="modalReferidosNombreCliente" name="modalReferidosNombreCliente" class="modal-referidos-form-input" placeholder="Ingresa el nombre completo" required minlength="3" maxlength="100">
+              <i data-lucide="user" class="modal-referidos-input-icon"></i>
+            </div>
+            <div class="modal-referidos-error-message" id="modal-referidos-error-modalReferidosNombreCliente"></div>
+          </div>
+
+          <!-- Número de celular -->
+          <div class="modal-referidos-form-group">
+            <label for="modalReferidosNumeroCelular" class="modal-referidos-form-label">Número de Celular</label>
+            <div class="modal-referidos-input-with-icon">
+              <input type="tel" id="modalReferidosNumeroCelular" name="modalReferidosNumeroCelular"class="modal-referidos-form-input" placeholder="3001234567" required pattern="[0-9]{10}" maxlength="10">
+              <i data-lucide="phone" class="modal-referidos-input-icon"></i>
+            </div>
+            <div class="modal-referidos-error-message" id="modal-referidos-error-modalReferidosNumeroCelular"></div>
+          </div>
+
+          <!-- Correo electrónico -->
+          <div class="modal-referidos-form-group">
+            <label for="modalReferidosCorreoElectronico" class="modal-referidos-form-label">Correo Electrónico</label>
+            <div class="modal-referidos-input-with-icon">
+              <input type="email" id="modalReferidosCorreoElectronico" name="modalReferidosCorreoElectronico" class="modal-referidos-form-input" placeholder="correo@ejemplo.com" required>
+              <i data-lucide="mail" class="modal-referidos-input-icon"></i>
+            </div>
+            <div class="modal-referidos-error-message" id="modal-referidos-error-modalReferidosCorreoElectronico"></div>
+          </div>
+
+          <!-- Placa -->
+          <div class="modal-referidos-form-group">
+            <label for="modalReferidosPlaca" class="modal-referidos-form-label">Placa</label>
+            <div class="modal-referidos-input-with-icon">
+              <input type="text" id="modalReferidosPlaca" name="modalReferidosPlaca" class="modal-referidos-form-input" placeholder="ABC123" required>
+              <i data-lucide="car" class="modal-referidos-input-icon"></i>
+            </div>
+            <div class="modal-referidos-error-message" id="modal-referidos-error-modalReferidosPlaca"></div>
+          </div>
+
+          <!-- Tipo Producto -->
+          <div class="modal-referidos-form-group">
+            <label for="modalReferidosTipoProducto" class="modal-referidos-form-label">Tipo de Producto</label>
+            <select id="modalReferidosTipoProducto" name="modalReferidosTipoProducto" class="modal-referidos-form-select" required>
+              <option value="">Selecciona el tipo de producto</option>
+              <option value="PREMIUM+360">Premium + Cobertura 360</option>
+              <option value="PREMIUM">Premium</option>
+              <option value="ESTANDAR">Estándar</option>
+              <option value="CLASICO">Clásico</option>
+              <option value="LIGERO">Ligero</option>
+              <option value="VERDE">Verde</option>
+            </select>
+            <div class="modal-referidos-error-message" id="modal-referidos-error-modalReferidosTipoProducto"></div>
+          </div>
+
+          <div class="modal-referidos-form-group">
+            <label for="modalReferidosFuenteReferido" class="modal-referidos-form-label">Fuente Referido</label>
+            <select id="modalReferidosFuenteReferido" name="modalReferidosFuenteReferido" class="modal-referidos-form-select" required>
+              <option value="">Selecciona la fuente del referido</option>
+              <option value="REFERIDO CLIENTE">Referido por cliente</option>
+              <option value="REFERIDO PROPIO">Referido propio</option>
+              <option value="REFERIDO TERCERO">Referido tercero</option>
+            </select>
+            <div class="modal-referidos-error-message" id="modal-referidos-error-modalFuenteReferido"></div>
+          </div>
+
+          <div class="modal-referidos-form-group additionalOptions" hidden>
+            <label for="modalReferidosCorreoElectronico" class="modal-referidos-form-label">¿Nombre Quién Refiere?</label>
+            <div class="modal-referidos-input-with-icon">
+              <input type="text" id="modalReferidosNombreRadicador" name="modalReferidosNombreRadicador" class="modal-referidos-form-input" placeholder="Ingresa el nombre completo">
+              <i class="fa-regular fa-id-badge modal-referidos-input-icon"  style="font-size: 25px;"></i>
+            </div>
+            <div class="modal-referidos-error-message" id="modal-referidos-error-modalReferidosNombreRadicador"></div>
+          </div>
+
+          <div class="modal-referidos-form-group additionalOptions" hidden>
+            <label for="modalReferidosNumeroDocumento" class="modal-referidos-form-label">¿Cédula Quién Refiere?</label>
+            <div class="modal-referidos-input-with-icon">
+              <input type="text" id="modalReferidosNumeroDocumentoRadicador" name="modalReferidosNumeroDocumentoRadicador" class="modal-referidos-form-input" placeholder="Ingresa el número de documento" pattern="[0-9]{6,12}" maxlength="12">
+              <i class="fa-regular fa-id-card modal-referidos-input-icon" style="font-size: 20px;"></i>
+            </div>
+            <div class="modal-referidos-error-message"
+              id="modal-referidos-error-modalReferidosNumeroDocumentoRadicador"></div>
+          </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-referidos-footer" id="modalReferidosFooter">
+          <button type="submit" class="modal-referidos-btn-primary" id="modalReferidosSubmitBtn">
+          <i data-lucide="check-circle"></i>Guardar Cliente
+        </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  <!-- Login -->
+
+  <div id="Seccion_Login" class="login-wrapper" hidden>
+    <!-- Partículas de fondo animadas -->
+    <div class="particles-container">
+      <div class="particle" style="--delay: 0s; --duration: 20s; --size: 4px; --left: 10%;"></div>
+      <div class="particle" style="--delay: 2s; --duration: 25s; --size: 6px; --left: 20%;"></div>
+      <div class="particle" style="--delay: 4s; --duration: 18s; --size: 3px; --left: 30%;"></div>
+      <div class="particle" style="--delay: 1s; --duration: 22s; --size: 5px; --left: 40%;"></div>
+      <div class="particle" style="--delay: 3s; --duration: 19s; --size: 4px; --left: 50%;"></div>
+      <div class="particle" style="--delay: 5s; --duration: 24s; --size: 7px; --left: 60%;"></div>
+      <div class="particle" style="--delay: 2s; --duration: 16s; --size: 3px; --left: 70%;"></div>
+      <div class="particle" style="--delay: 4s; --duration: 28s; --size: 5px; --left: 80%;"></div>
+      <div class="particle" style="--delay: 1s; --duration: 21s; --size: 6px; --left: 90%;"></div>
+    </div>
+
+    <!-- Burbujas mejoradas -->
+    <div class="bubble-enhanced" style="--size: 60px; --left: 5%; --duration: 25s; --delay: 0s;"></div>
+    <div class="bubble-enhanced" style="--size: 80px; --left: 15%; --duration: 30s; --delay: 3s;"></div>
+    <div class="bubble-enhanced" style="--size: 40px; --left: 25%; --duration: 22s; --delay: 1s;"></div>
+    <div class="bubble-enhanced" style="--size: 70px; --left: 35%; --duration: 27s; --delay: 4s;"></div>
+    <div class="bubble-enhanced" style="--size: 50px; --left: 45%; --duration: 24s; --delay: 2s;"></div>
+    <div class="bubble-enhanced" style="--size: 90px; --left: 55%; --duration: 32s; --delay: 5s;"></div>
+    <div class="bubble-enhanced" style="--size: 35px; --left: 65%; --duration: 20s; --delay: 1.5s;"></div>
+    <div class="bubble-enhanced" style="--size: 65px; --left: 75%; --duration: 26s; --delay: 3.5s;"></div>
+    <div class="bubble-enhanced" style="--size: 45px; --left: 85%; --duration: 23s; --delay: 2.5s;"></div>
+    <div class="bubble-enhanced" style="--size: 55px; --left: 95%; --duration: 29s; --delay: 4.5s;"></div>
+
+    <div class="login-container d-flex">
+      <!-- Sección Izquierda Mejorada -->
+      <div class="login-left d-flex flex-column justify-content-center align-items-center text-white p-5">
+        <div class="logo-container mb-4">
+          <div class="logo-circle bg-white d-flex justify-content-center align-items-center shadow-lg">
+            <img src="https://www.segurosbolivar.com/assets/img/logo.png" alt="logo" class="img-fluid logo-image">
+          </div>
+          <div class="logo-glow"></div>
+        </div>
+
+        <div class="welcome-content text-center">
+          <h2 class="fw-bold mb-3 welcome-title">
+            <span class="title-highlight">CRM Mercadeo Bolívar</span>
+          </h2>
+          <p class="welcome-description">
+            Gestiona pólizas de auto, vida y crédito.
+          </p>
+        </div>
+      </div>
+
+      <!-- Sección Derecha Mejorada -->
+      <div class="login-right d-flex flex-column justify-content-center p-5">
+        <div class="login-header text-center mb-4">
+          <h3 class="login-title mb-2">Iniciar Sesión</h3>
+          <p class="login-subtitle">Accede a tu cuenta para continuar</p>
+        </div>
+
+        <form class="login-form" style="max-width: 400px; margin: 0 auto; margin-top: 2rem;">
+          <!-- Campo de usuario mejorado -->
+          <div class="form-group-modern mb-3">
+            <div class="input-container">
+              <i class="fas fa-user input-icon"></i>
+              <input type="text" class="form-control-modern" id="User" name="User" placeholder=" " required>
+              <label for="User" class="floating-label">Usuario o Email</label>
+              <div class="input-border"></div>
+            </div>
+            <div class="input-feedback"></div>
+          </div>
+
+          <!-- Campo de contraseña mejorado -->
+          <div class="form-group-modern mb-3" id="Div_Input_Contraseña" style="display:none;">
+            <div class="input-container">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" class="form-control-modern" id="Contraseña" name="Contraseña" placeholder=" " required>
+              <label for="Contraseña" class="floating-label">Código OTP</label>
+              <button type="button" class="password-toggle" onclick="togglePassword()"><i class="fas fa-eye"></i></button>
+              <div class="input-border"></div>
+            </div>
+            <div class="password-strength">
+              <div class="strength-bar">
+                <div class="strength-fill"></div>
+              </div>
+              <span class="strength-text"></span>
+            </div>
+          </div>
+
+          <!-- Botones de acción mejorados -->
+          <div class="action-buttons">
+            <div class="mt-3" id="Div_button_Autenticar">
+              <button type="button" id="button_Autenticar" class="btn btn-primary-modern w-100">
+                <span class="btn-text">CONTINUAR</span>
+                <div class="btn-loader">
+                  <div class="spinner"></div>
+                </div>
+              </button>
+            </div>
+
+            <div class="mt-3" id="Div_button_Login" style="display:none;">
+              <button type="button" id="button_Login" class="btn btn-success-modern w-100">
+                <span class="btn-text">INGRESAR</span>
+                <div class="btn-loader">
+                  <div class="spinner"></div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input oculto para el flatpickr -->
+  <input type="text" id="reminderDate" class="d-none">
+  <div id="segurosBolivarModernOverlay" class="sb-modern-overlay">
+    <div class="sb-loading-container">
+      <img src="https://www.presente.com.co/wp-content/uploads/2019/12/logo-seguros-bolivar.png" alt="Logo Seguros Bolívar" class="sb-loading-logo">
+    </div>
+  </div>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+</body>
+
+</html>
