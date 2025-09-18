@@ -19,6 +19,129 @@
   let dataPolizas;
   let sectionSelected = "Pendientes Gestión";
   $(document).ready(function() {
+    const PRODUCTS_CONFIG = {
+      "Autos": {
+        types: ["Individual"],
+        detailsByType: {
+          "Individual": [
+            { value: "PREMIUM+360", label: "Premium + 360" },
+            { value: "PREMIUM", label: "Premium" },
+            { value: "ESTANDAR", label: "Estándar" },
+            { value: "CLASICO", label: "Clásico" },
+            { value: "LIGERO", label: "Ligero" },
+            { value: "VERDE", label: "Verde" }
+          ]
+        },
+        plansByDetail: {},
+        placaVisible: true
+      },
+      "Salud": {
+        types: ["Colectiva", "Individual"],
+        detailsByType: {
+          "Colectiva": [
+            { value: "Livianos", label: "Livianos" },
+            { value: "Médica familiar", label: "Médica familiar" },
+            { value: "Corporate", label: "Corporate" }
+          ],
+          "Individual": [
+            { value: "Salud Internacional", label: "Salud Internacional" },
+            { value: "Salud a su Medida", label: "Salud a su Medida" }
+          ]
+        },
+        plansByDetail: {
+          "Salud Internacional": ["ESSENTIAL", "SELECT", "PREMIER", "ELITE", "ULTIMATE"],
+          "Livianos": ["Plan 1", "Plan 2", "Plan 3"],
+          "Médica familiar": ["Plan Básico", "Plan Medio", "Plan Alto"],
+          "Salud a su Medida": ["Plan S", "Plan S+", "Plan M", "Plan M+", "Plan L"]
+        },
+        placaVisible: false
+      },
+      "Vida": {
+        types: ["Individual"],
+        detailsByType: {
+          "Individual": [
+            { value: "Vida Individual", label: "Vida Individual" },
+            { value: "Vida Grupo", label: "Vida Grupo" },
+            { value: "Vida Deudores", label: "Vida Deudores" }
+          ]
+        },
+        plansByDetail: {},
+        placaVisible: false
+      },
+      "Crédito": {
+        types: ["Individual"],
+        detailsByType: {
+          "Individual": [
+            { value: "Protección Crédito", label: "Protección Crédito" },
+            { value: "Crédito Hipotecario", label: "Crédito Hipotecario" }
+          ]
+        },
+        plansByDetail: {},
+        placaVisible: false
+      }
+    };
+
+    function setSelectOptions($select, options, placeholderText) {
+      $select.empty();
+      if (placeholderText) {
+        $select.append(`<option value="" selected disabled hidden>${placeholderText}</option>`);
+      }
+      options.forEach(function(opt) {
+        if (typeof opt === 'string') {
+          $select.append(`<option value="${opt}">${opt}</option>`);
+        } else if (opt && typeof opt === 'object') {
+          $select.append(`<option value="${opt.value}">${opt.label}</option>`);
+        }
+      });
+    }
+
+    function togglePlacaVisibility(lineaProducto) {
+      const config = PRODUCTS_CONFIG[lineaProducto];
+      if (!config) return;
+      if (config.placaVisible) {
+        $('#group_placa_client').show();
+      } else {
+        $('#group_placa_client').hide();
+        $('#placa_client').val('');
+      }
+    }
+
+    function refreshTypeOptions() {
+      const linea = $('#productLine').val() || 'Autos';
+      const config = PRODUCTS_CONFIG[linea];
+      if (!config) return;
+      setSelectOptions($('#typePoliza'), config.types, 'Seleccione');
+      $('#typePoliza').val('').trigger('change');
+      setSelectOptions($('#detailsPoliza'), [], '⚠️Seleccione Tipo');
+      $('#detailsPlanPoliza').empty();
+      $('#container_detailsPlanPoliza').prop('hidden', true);
+      togglePlacaVisibility(linea);
+    }
+
+    function refreshDetailOptions() {
+      const linea = $('#productLine').val() || 'Autos';
+      const config = PRODUCTS_CONFIG[linea];
+      const tipo = $('#typePoliza').val();
+      const detailOptions = (config && config.detailsByType && config.detailsByType[tipo]) || [];
+      setSelectOptions($('#detailsPoliza'), detailOptions, '⚠️Seleccione Tipo');
+      $('#detailsPoliza').val('').trigger('change');
+      $('#detailsPlanPoliza').empty();
+      $('#container_detailsPlanPoliza').prop('hidden', true);
+    }
+
+    function refreshPlanOptions() {
+      const linea = $('#productLine').val() || 'Autos';
+      const config = PRODUCTS_CONFIG[linea];
+      const detalle = $('#detailsPoliza').val();
+      const plans = (config && config.plansByDetail && config.plansByDetail[detalle]) || [];
+      if (plans.length > 0) {
+        setSelectOptions($('#detailsPlanPoliza'), plans, 'Seleccione');
+        $('#container_detailsPlanPoliza').prop('hidden', false);
+      } else {
+        $('#detailsPlanPoliza').empty();
+        $('#container_detailsPlanPoliza').prop('hidden', true);
+      }
+    }
     function initSelect2(selector) {
       $(selector).each(function() {
         if ($(this).hasClass('select2-hidden-accessible')) {
@@ -74,78 +197,20 @@
       }
     });
 
+    $('#productLine').on('change', function() {
+      refreshTypeOptions();
+    });
+
     $("#typePoliza").on('change',function(){
-      $("#detailsPoliza").empty();
-      let selectOptions;
-      if($(this).val() === "Colectiva"){
-        selectOptions = `
-          <option selected disabled hidden>Seleccione</option>   
-          <option value="Livianos">Livianos</option>
-          <option value="Médica familiar">Médica familiar</option>
-          <option value="Corporate">Corporate</option>
-        `
-      }else if($(this).val() === "Individual"){
-        selectOptions = `
-          <option selected disabled hidden>Seleccione</option>   
-          <option value="PREMIUM+360">Premium + 360</option>
-          <option value="PREMIUM">Premium</option>
-          <option value="ESTANDAR">Estándar</option>
-          <option value="CLASICO">Clásico</option>
-          <option value="LIGERO">Ligero</option>
-          <option value="VERDE">Verde</option>
-        `
-      }
-      $("#detailsPoliza").append(selectOptions);
+      refreshDetailOptions();
     });
 
     $('#detailsPoliza').on('change', function(){
-      $("#detailsPlanPoliza").empty();
-      let selectOptions;
-      if($(this).val() === "Salud Internacional"){
-        selectOptions = `
-          <option selected disabled hidden>Seleccione</option>   
-          <option value="ESSENTIAL">ESSENTIAL</option>
-          <option value="SELECT">SELECT</option>
-          <option value="PREMIER">PREMIER</option>
-          <option value="ELITE">ELITE</option>
-          <option value="ULTIMATE">ULTIMATE</option>
-        ` 
-        $("#detailsPlanPoliza").append(selectOptions);
-        $('#container_detailsPlanPoliza').prop('hidden',false);
-      }else if($(this).val() === "Livianos"){
-        selectOptions = `
-          <option selected disabled hidden>Seleccione</option>   
-          <option value="Plan 1">Plan 1</option>
-          <option value="Plan 2">Plan 2</option>
-          <option value="Plan 3">Plan 3</option>
-        `
-        $("#detailsPlanPoliza").append(selectOptions);
-        $('#container_detailsPlanPoliza').prop('hidden',false);
-      }else if($(this).val() === "Médica familiar"){
-        selectOptions = `
-          <option selected disabled hidden>Seleccione</option>   
-          <option value="Plan Básico">Plan Básico</option>
-          <option value="Plan Medio">Plan Medio</option>
-          <option value="Plan Alto">Plan Alto</option>
-        `
-        $("#detailsPlanPoliza").append(selectOptions);
-        $('#container_detailsPlanPoliza').prop('hidden',false);
-      }else if($(this).val() === "Salud a su Medida"){
-        selectOptions = `
-          <option selected disabled hidden>Seleccione</option>   
-          <option value="Plan S">Plan S</option>
-          <option value="Plan S+">Plan S+</option>
-          <option value="Plan M">Plan M</option>
-          <option value="Plan M+">Plan M+</option>
-          <option value="Plan L">Plan L</option>
-        `
-        $("#detailsPlanPoliza").append(selectOptions);
-        $('#container_detailsPlanPoliza').prop('hidden',false);
-      }else{
-        $('#container_detailsPlanPoliza').prop('hidden',true);
-      }
-      
+      refreshPlanOptions();
     });
+
+    // Inicializar opciones en base a la línea por defecto
+    refreshTypeOptions();
 
     $("#btn_create_event_user").on('click',function(){
       let overlay = $('#segurosBolivarModernOverlay');
@@ -1948,6 +2013,22 @@
   }
 
   
+  function detectProductLineFromDataProduct(dataProduct) {
+    try {
+      const detail = dataProduct && (dataProduct.health_product || dataProduct.product_detail);
+      if (!detail) return 'Autos';
+      const inAutos = ["PREMIUM+360","PREMIUM","ESTANDAR","CLASICO","LIGERO","VERDE"].includes(String(detail).toUpperCase());
+      if (inAutos) return 'Autos';
+      const inSalud = ["Salud Internacional","Livianos","Médica familiar","Salud a su Medida"].includes(String(detail));
+      if (inSalud) return 'Salud';
+      const inVida = ["Vida Individual","Vida Grupo","Vida Deudores"].includes(String(detail));
+      if (inVida) return 'Vida';
+      const inCredito = ["Protección Crédito","Crédito Hipotecario"].includes(String(detail));
+      if (inCredito) return 'Crédito';
+      return 'Autos';
+    } catch (e) { return 'Autos'; }
+  }
+
   function managementClient(RowSelected){
     let table = $("#authorsTable").DataTable();
     let rowData = table.row(RowSelected).data();
@@ -1965,7 +2046,8 @@
     $("#requestTimeLine").empty();
     if(rowData[15] != ''){
       let dataProduct = JSON.parse(rowData[15]);
-
+      const inferredLine = detectProductLineFromDataProduct(dataProduct);
+      $('#productLine').val(inferredLine).trigger('change');
       if (dataProduct.poliza_type !== null && typeof dataProduct.poliza_type !== 'undefined') {
         $('#typePoliza').val(dataProduct.poliza_type).trigger('change');
       }
