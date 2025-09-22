@@ -39,15 +39,21 @@ function getDataUser() {
   let responseRequest;
   let userRol;
   let businessRol;
+  let productUser;
   if (!activeUser) {
     responseRequest = ["externalUser"];
   } else {
     let rowPosition = sheetActiveUsers.getRange("A:A").createTextFinder(activeUser).ignoreDiacritics(true).matchEntireCell(true).findPrevious().getRow();
     userRol = sheetActiveUsers.getRange("C"+rowPosition).getDisplayValue();
     businessRol = sheetActiveUsers.getRange("D"+rowPosition).getDisplayValue();
+    try {
+      productUser = sheetActiveUsers.getRange("E"+rowPosition).getDisplayValue();
+    } catch(err) {
+      productUser = "Autos"; // default fallback
+    }
     responseRequest = userDataExtraction();
   }
-  return [activeUser, responseRequest, userRol, businessRol];
+  return [activeUser, responseRequest, userRol, businessRol, productUser];
 }
 
 function getDataCommercialIntent() {
@@ -66,7 +72,7 @@ function getDataCommercialIntent() {
       } else if (totalHours > 4 && (totalHours === 8 || totalHours < 8)) {
         dataCalculate = "Media";
       }
-      return [row[0], dataCalculate, row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[13],row[10], row[14], row[16], row[17], row[19], row[21], row[18], row[22],row[23], ""];
+      return [row[0], dataCalculate, row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[1], row[10], row[14], row[16], row[17], row[19], row[21], row[18], row[22], row[23], ""];
     });
     dataRange = dataRange.sort((a, b) => {
       const order = { "Alta": 0, "Media": 1, "Baja": 2 };
@@ -121,7 +127,7 @@ function getDataFollowUp() {
       } else if (totalHours > 4 && (totalHours === 8 || totalHours < 8)) {
         dataCalculate = "Media";
       }
-      return [row[0], dataCalculate, row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[13],row[10], row[14], row[16], row[17], row[19], row[21], row[18], row[22],row[23], ""];
+      return [row[0], dataCalculate, row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[1], row[10], row[14], row[16], row[17], row[19], row[21], row[18], row[22], row[23], ""];
     });
     dataRange = dataRange.sort((a, b) => {
       const order = { "Alta": 0, "Media": 1, "Baja": 2 };
@@ -168,7 +174,7 @@ function getDataGivenUp() {
   });
   if (dataRange.length > 0) {
     dataRange = dataRange.map(row => {
-      return [row[0], "DESISTIDO", row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[13],row[10], row[14], row[16], row[17], row[19], row[21], row[18], row[22],row[23], ""];
+      return [row[0], "DESISTIDO", row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[1], row[10], row[14], row[16], row[17], row[19], row[21], row[18], row[22], row[23], ""];
     });
     let dataLengthTotalPremium360 = 0;
     let dataLengthTotalPremium = 0;
@@ -285,7 +291,7 @@ function userDataExtraction(user) {
         dataCalculate = "Media";
       }
     }
-    return [row[0], dataCalculate, row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[13],row[10], row[14], row[16], row[17], row[19], row[21], row[18], row[22],row[23], ""];
+    return [row[0], dataCalculate, row[2], row[3], row[4], row[5], row[6], row[7], row[8], baseOrigin, row[10], row[14], row[16], row[17], row[19], row[21], row[18], row[22], row[23], ""];
   });
   dataRange = dataRange.sort((a, b) => {
     const order = { "Alta": 0, "Media": 1, "Baja": 2 };
@@ -447,10 +453,24 @@ function saveDataManagment(clientInfoData, decisionTreeData, idUnique, sectionSe
       subStatus = decisionTreeData['Estado de la gestión'];
     }
   }
-  let detailsPoliza = new Object({
-    'poliza_type': clientInfoData['typePoliza'],
-    'product_type': clientInfoData['detailsPlanPoliza']
-  });
+  // Build a flexible details object that works for all products
+  let detailsPoliza = {};
+  if (clientInfoData['typePoliza']) detailsPoliza['poliza_type'] = clientInfoData['typePoliza'];
+  if (clientInfoData['detailsPlanPoliza']) detailsPoliza['product_type'] = clientInfoData['detailsPlanPoliza'];
+  if (clientInfoData['detailsPoliza']) {
+    // For Salud, this is the main health product; for other products it can be the selected plan/policy
+    detailsPoliza['health_product'] = clientInfoData['detailsPoliza'];
+    detailsPoliza['product_selected'] = clientInfoData['detailsPoliza'];
+  }
+  if (clientInfoData['getEPS']) detailsPoliza['got_EPS'] = clientInfoData['getEPS'];
+  if (clientInfoData['havemore60']) detailsPoliza['over_60'] = clientInfoData['havemore60'];
+  if (clientInfoData['ObjectMultiple']) detailsPoliza['quoting_for'] = clientInfoData['ObjectMultiple'];
+  if (clientInfoData['plate']) detailsPoliza['plate'] = clientInfoData['plate'];
+  if (clientInfoData['direccion']) detailsPoliza['address'] = clientInfoData['direccion'];
+  if (clientInfoData['actividad_economica']) detailsPoliza['economic_activity'] = clientInfoData['actividad_economica'];
+  if (clientInfoData['nombre_empresa']) detailsPoliza['company_name'] = clientInfoData['nombre_empresa'];
+  if (clientInfoData['nit_empresa']) detailsPoliza['company_nit'] = clientInfoData['nit_empresa'];
+  if (clientInfoData['currentProduct']) detailsPoliza['product'] = clientInfoData['currentProduct'];
   let historyObservations = new Object({
     'userTypeObservation': 'asesor',
     'userName': activeMail,
@@ -558,7 +578,52 @@ function createNewClient(formData) {
     tabledataReferidos.appendRow([dateWarehouse, requestCode, objectInfoReferido])
   }
   objectText = JSON.stringify([objectText])
-  sheetLeadsAutos.appendRow([dateWarehouse, formData["modalReferidosFuenteReferido"], formData["modalReferidosTipoProducto"], requestCode, formData["modalReferidosNombreCliente"].toUpperCase(), "57" + formData["modalReferidosNumeroCelular"], formData["modalReferidosCorreoElectronico"], formData["modalReferidosTipoDocumento"], formData["modalReferidosNumeroDocumento"], "Sí autorizo.",formData["modalReferidosPlaca"], "", "","",  "Pendiente Gestión", activeUser, objectText, "", "", 0]);
+
+  // Build initial details for creation depending on product
+  let initialDetails = {};
+  if (formData['modalReferidosProducto']) initialDetails['product'] = formData['modalReferidosProducto'];
+  if (formData['modalReferidosTipoProducto']) {
+    initialDetails['product_selected'] = formData['modalReferidosTipoProducto'];
+    // Keep backward compat for Salud
+    initialDetails['health_product'] = formData['modalReferidosTipoProducto'];
+  }
+  if (formData['modalReferidosPlaca']) initialDetails['plate'] = formData['modalReferidosPlaca'];
+  if (formData['modalReferidosDireccion']) initialDetails['address'] = formData['modalReferidosDireccion'];
+  if (formData['modalReferidosActividadEconomica']) initialDetails['economic_activity'] = formData['modalReferidosActividadEconomica'];
+  if (formData['modalReferidosNombreEmpresa']) initialDetails['company_name'] = formData['modalReferidosNombreEmpresa'];
+  if (formData['modalReferidosNITEmpresa']) initialDetails['company_nit'] = formData['modalReferidosNITEmpresa'];
+  let detailsJson = JSON.stringify(initialDetails);
+
+  // Place plate only for Autos in column K; otherwise empty
+  let placaValue = (formData['modalReferidosProducto'] === 'Autos') ? (formData['modalReferidosPlaca'] || '') : '';
+
+  // Append row including placeholders up to V to store detailsJson
+  sheetLeadsAutos.appendRow([
+    dateWarehouse, // A
+    formData["modalReferidosFuenteReferido"], // B (Fuente)
+    formData["modalReferidosTipoProducto"], // C (Segmento/Política)
+    requestCode, // D (Id)
+    formData["modalReferidosNombreCliente"].toUpperCase(), // E
+    "57" + formData["modalReferidosNumeroCelular"], // F
+    formData["modalReferidosCorreoElectronico"], // G
+    formData["modalReferidosTipoDocumento"], // H
+    formData["modalReferidosNumeroDocumento"], // I
+    "Sí autorizo.", // J
+    placaValue, // K (Placa for Autos)
+    "", // L
+    "", // M
+    "", // N
+    "Pendiente Gestión", // O
+    activeUser, // P
+    objectText, // Q (Timeline)
+    "", // R (History)
+    "", // S (Subestado)
+    0, // T (Veces Gestión)
+    "", // U (Fecha Última Gestión)
+    detailsJson, // V (Detalles del producto)
+    "", // W (Valores pólizas)
+    "" // X (Reserva)
+  ]);
   let userDataRange = userDataExtraction(activeUser)
   return userDataRange;
 }

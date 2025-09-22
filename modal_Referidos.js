@@ -8,6 +8,75 @@
       setTimeout(() => {
         $('#modalReferidosTipoDocumento').focus();
       }, 100);
+      try{
+        if(window.currentProduct){
+          $('#modalReferidosTipoProducto').empty();
+          const product = window.currentProduct;
+          const optionsByProduct = {
+            'Autos': ["PREMIUM+360","PREMIUM","ESTÁNDAR","CLÁSICO","LIGERO","VERDE"],
+            'Vida': ["PROTECCIÓN DE CRÉDITOS","VIDA INTEGRAL","VIDA INVERSIÓN","TRANQUILIDAD HIJOS","TRANQUILIDAD ADULTO MAYOR"],
+            'PYMES': ["PYMES+DIGITAL"],
+            'ARL': ["ARL"],
+            'Hogar': ["HOGAR TRADICIONAL","HOGAR DIGITAL"],
+            'Salud': ["SALUD MEDIDA","SALUD INTEGRAL","BIENESTAR Y SALUD"]
+          };
+          const opts = optionsByProduct[product] || optionsByProduct['Salud'];
+          $('#modalReferidosTipoProducto').append('<option value="">Selecciona el tipo de producto</option>');
+          opts.forEach(v=> $('#modalReferidosTipoProducto').append(`<option value="${v}">${v}</option>`));
+          if($('#modalReferidosProducto').length===0){
+            $('#modalReferidosClientForm').append('<input type="hidden" id="modalReferidosProducto" name="modalReferidosProducto" />');
+          }
+          $('#modalReferidosProducto').val(product);
+          // Toggle custom fields by product
+          if(product==='Autos'){
+            if($('#modalReferidosPlaca').length===0){
+              $('#modalReferidosFooter').before(`
+                <div class="modal-referidos-form-group">
+                  <label for="modalReferidosPlaca" class="modal-referidos-form-label">Placa</label>
+                  <div class="modal-referidos-input-with-icon">
+                    <input type="text" id="modalReferidosPlaca" name="modalReferidosPlaca" class="modal-referidos-form-input" placeholder="ABC123" required>
+                    <i class="fa-solid fa-car modal-referidos-input-icon" style="font-size:20px;"></i>
+                  </div>
+                  <div class="modal-referidos-error-message" id="modal-referidos-error-modalReferidosPlaca"></div>
+                </div>`);
+            }
+          }
+          if(product==='PYMES' || product==='ARL'){
+            [
+              {id:'modalReferidosNombreEmpresa', label:'Nombre Empresa', icon:'fa-regular fa-building'},
+              {id:'modalReferidosNITEmpresa', label:'NIT Empresa', icon:'fa-solid fa-id-card'},
+              {id:'modalReferidosActividadEconomica', label:'Actividad Económica', icon:'fa-solid fa-briefcase'},
+              {id:'modalReferidosDireccion', label:'Dirección', icon:'fa-solid fa-location-dot'}
+            ].forEach(f=>{
+              if($('#'+f.id).length===0){
+                $('#modalReferidosFooter').before(`
+                  <div class="modal-referidos-form-group">
+                    <label for="${f.id}" class="modal-referidos-form-label">${f.label}</label>
+                    <div class="modal-referidos-input-with-icon">
+                      <input type="text" id="${f.id}" name="${f.id}" class="modal-referidos-form-input" placeholder="${f.label}" required>
+                      <i class="${f.icon} modal-referidos-input-icon" style="font-size:20px;"></i>
+                    </div>
+                    <div class="modal-referidos-error-message" id="modal-referidos-error-${f.id}"></div>
+                  </div>`);
+              }
+              $('#'+f.id).attr('required', true);
+            })
+          }
+          if(product==='Hogar'){
+            if($('#modalReferidosDireccion').length===0){
+              $('#modalReferidosFooter').before(`
+                <div class="modal-referidos-form-group">
+                  <label for="modalReferidosDireccion" class="modal-referidos-form-label">Dirección</label>
+                  <div class="modal-referidos-input-with-icon">
+                    <input type="text" id="modalReferidosDireccion" name="modalReferidosDireccion" class="modal-referidos-form-input" placeholder="Dirección" required>
+                    <i class="fa-solid fa-location-dot modal-referidos-input-icon" style="font-size:20px;"></i>
+                  </div>
+                  <div class="modal-referidos-error-message" id="modal-referidos-error-modalReferidosDireccion"></div>
+                </div>`);
+            }
+          }
+        }
+      }catch(err){}
     });
 
     $(".modal-referidos-close").on('click',function(){

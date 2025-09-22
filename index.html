@@ -137,70 +137,70 @@
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-      <div class="row justify-content-center">
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+      <div class="row justify-content-center" id="static-cards-row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4" id="card-static-1" hidden>
           <div class="card modern-card">
             <div class="card-body p-3">
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold font-titles">Pendientes</p>
-                    <h5 id="titleTotalMedida" class="font-weight-bolder" data-target-number="">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold font-titles" id="card-static-1-title">Pendientes</p>
+                    <h5 id="titleTotalMedida" class="font-weight-bolder" data-target-number="0">
                     </h5>
                     <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder">Salud a su Medida</span>
+                      <span class="text-success text-sm font-weight-bolder" id="card-static-1-subtitle">Producto</span>
                     </p>
                   </div>
                 </div>
                 <div class="col-4 text-end">
                   <div class="icon-container icon-primary-gradient shadow text-center rounded-circle">
-                    <i class="fa-solid fa-suitcase-medical fs-4 opacity-10"></i>
+                    <i class="fa-solid fa-layer-group fs-4 opacity-10" id="card-static-1-icon"></i>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4" id="card-static-2" hidden>
           <div class="card modern-card">
             <div class="card-body p-3">
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold font-titles">Pendientes</p>
-                    <h5 id="titleTotalIntegral" class="font-weight-bolder" data-target-number="">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold font-titles" id="card-static-2-title">Pendientes</p>
+                    <h5 id="titleTotalIntegral" class="font-weight-bolder" data-target-number="0">
                     </h5>
                     <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder">Salud Integral</span>
+                      <span class="text-success text-sm font-weight-bolder" id="card-static-2-subtitle">Producto</span>
                     </p>
                   </div>
                 </div>
                 <div class="col-4 text-end">
                   <div class="icon-container icon-success-gradient shadow text-center rounded-circle">
-                    <i class="fa-solid fa-notes-medical fs-4 opacity-10"></i>
+                    <i class="fa-solid fa-layer-group fs-4 opacity-10" id="card-static-2-icon"></i>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4" id="card-static-3" hidden>
           <div class="card modern-card">
             <div class="card-body p-3">
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold">Pendientes</p>
-                    <h5 id="titleTotalBienestar" class="font-weight-bolder" data-target-number="">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold" id="card-static-3-title">Pendientes</p>
+                    <h5 id="titleTotalBienestar" class="font-weight-bolder" data-target-number="0">
                     </h5>
                     <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder">Bienestar y salud</span>
+                      <span class="text-success text-sm font-weight-bolder" id="card-static-3-subtitle">Producto</span>
                     </p>
                   </div>
                 </div>
                 <div class="col-4 text-end">
                   <div class="icon-container icon-info-gradient shadow text-center rounded-circle">
-                    <i class="fa-solid fa-user-doctor fs-4 opacity-10"></i>
+                    <i class="fa-solid fa-layer-group fs-4 opacity-10" id="card-static-3-icon"></i>
                   </div>
                 </div>
               </div>
@@ -215,10 +215,10 @@
                   <div class="numbers">
                     <p id="title_card_totals" class="text-sm mb-0 text-danger text-uppercase font-weight-bold">Total
                       Pendientes</p>
-                    <h5 id="titleTotalSalud" class="font-weight-bolder" data-target-number="">
+                    <h5 id="titleTotalSalud" class="font-weight-bolder" data-target-number="0">
                     </h5>
                     <p class="mb-0">
-                      <span class="text-success text-sm font-weight-bolder">Leads Salud</span>
+                      <span class="text-success text-sm font-weight-bolder" id="card-total-subtitle">Leads</span>
                     </p>
                   </div>
                 </div>
@@ -231,7 +231,30 @@
             </div>
           </div>
         </div>
+        <div class="col-xl-3 col-sm-6" id="card-policies-prima" hidden>
+          <div class="card modern-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold">Pólizas / Prima</p>
+                    <h5 class="font-weight-bolder"><span id="titleTotalPolizasCount">0</span> pólizas</h5>
+                    <p class="mb-0">
+                      <span class="text-success text-sm font-weight-bolder">Prima total: $<span id="titleTotalPrima">0</span></span>
+                    </p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon-container icon-primary-gradient shadow text-center rounded-circle">
+                    <i class="fa-solid fa-file-invoice-dollar fs-4 opacity-10"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+      <div class="row" id="dynamic-policy-cards-row"></div>
       <div id="container-principal" class="container-fluid py-4">
         <div class="row">
           <div class="col-12">
@@ -473,7 +496,7 @@
                 <!-- Producto Salud - Select -->
                 <div class="col-md-4 col-12">
                   <div class="info-field">
-                    <label class="info-field-label">Producto Salud</label>
+                    <label class="info-field-label" id="label_detailsPoliza">Producto</label>
                     <div class="info-field-icon-wrapper">
                       <div class="info-field-icon bg-document">
                         <i class="fa-solid fa-suitcase-medical"></i>
@@ -497,8 +520,8 @@
                     </select>
                   </div>
                 </div>
-                <!-- Tiene EPS - Select -->
-                <div class="col-md-4 col-12">
+                <!-- Tiene EPS - Select (Salud only) -->
+                <div class="col-md-4 col-12" id="field_getEPS">
                   <div class="info-field">
                     <label class="info-field-label">Tiene EPS</label>
                     <div class="info-field-icon-wrapper">
@@ -515,7 +538,7 @@
                 </div>
 
                 <!-- Para Quién Cotiza? - Select -->
-                <div class="col-md-8 col-12">
+                <div class="col-md-8 col-12" id="field_ObjectMultiple">
                   <div class="info-field">
                     <label class="info-field-label">¿Para quién esta cotizando?</label>
                     <div class="info-field-icon-wrapper">
@@ -534,7 +557,7 @@
                 </div>
 
                 <!-- Mayor a  60 años - Select -->
-                <div class="col-md-4 col-12">
+                <div class="col-md-4 col-12" id="field_havemore60">
                   <div class="info-field">
                     <label class="info-field-label">Mayor de 60 años?</label>
                     <div class="info-field-icon-wrapper">
@@ -547,6 +570,67 @@
                       <option value="Si">Si</option>
                       <option value="No">No</option>
                     </select>
+                  </div>
+                </div>
+
+                <!-- Autos: Placa -->
+                <div class="col-md-4 col-12 product-field product-autos" hidden>
+                  <div class="info-field">
+                    <label class="info-field-label">Placa</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fa-solid fa-car"></i>
+                      </div>
+                    </div>
+                    <input id="plate" name="plate" type="text" class="form-control" placeholder="ABC123">
+                  </div>
+                </div>
+
+                <!-- PYMES / ARL: Empresa y NIT (visible in tables too) -->
+                <div class="col-md-4 col-12 product-field product-pymes product-arl" hidden>
+                  <div class="info-field">
+                    <label class="info-field-label">Nombre Empresa</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fa-regular fa-building"></i>
+                      </div>
+                    </div>
+                    <input id="nombre_empresa" name="nombre_empresa" type="text" class="form-control" placeholder="Empresa S.A.">
+                  </div>
+                </div>
+                <div class="col-md-4 col-12 product-field product-pymes product-arl" hidden>
+                  <div class="info-field">
+                    <label class="info-field-label">NIT Empresa</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fa-solid fa-id-card"></i>
+                      </div>
+                    </div>
+                    <input id="nit_empresa" name="nit_empresa" type="text" class="form-control" placeholder="123456789-0">
+                  </div>
+                </div>
+
+                <!-- PYMES / ARL: Actividad Económica y Dirección (no table) -->
+                <div class="col-md-4 col-12 product-field product-pymes product-arl" hidden>
+                  <div class="info-field">
+                    <label class="info-field-label">Actividad Económica</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fa-solid fa-briefcase"></i>
+                      </div>
+                    </div>
+                    <input id="actividad_economica" name="actividad_economica" type="text" class="form-control" placeholder="Actividad">
+                  </div>
+                </div>
+                <div class="col-md-4 col-12 product-field product-pymes product-arl product-hogar" hidden>
+                  <div class="info-field">
+                    <label class="info-field-label">Dirección</label>
+                    <div class="info-field-icon-wrapper">
+                      <div class="info-field-icon bg-document">
+                        <i class="fa-solid fa-location-dot"></i>
+                      </div>
+                    </div>
+                    <input id="direccion" name="direccion" type="text" class="form-control" placeholder="Dirección">
                   </div>
                 </div>
                 <div id="policy-section" hidden>

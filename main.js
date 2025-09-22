@@ -18,6 +18,67 @@
   let dateRecordatory;
   let dataPolizas;
   let sectionSelected = "Pendientes Gestión";
+  window.currentProduct = 'Salud';
+  const PRODUCT_POLICIES = {
+    'Autos': ["PREMIUM+360","PREMIUM","ESTANDAR","CLASICO","LIGERO","VERDE"],
+    'Vida': ["PROTECCIÓN DE CRÉDITOS","VIDA INTEGRAL","VIDA INVERSIÓN","TRANQUILIDAD HIJOS","TRANQUILIDAD ADULTO MAYOR"],
+    'PYMES': ["PYMES+DIGITAL"],
+    'ARL': ["ARL"],
+    'Hogar': ["HOGAR TRADICIONAL","HOGAR DIGITAL"],
+    'Salud': ["SALUD MEDIDA","SALUD INTEGRAL","BIENESTAR Y SALUD"]
+  };
+  const DECISION_TREE = {
+    default: {
+      noContacto: ["No contesta","Fuera servicio","Mensaje tercero","Cliente cuelga","No conocen al cliente","Volver llamar seguimiento","No gestionado"],
+      volverAContactar: ["Llamar en la mañana","Llamar en la tarde","Regresar Llamada"],
+      noAcepta: ["No escucha propuesta","No aplica condiciones de producto","Muy costoso","No le interesa","No es la persona que tomará el seguro"],
+      acepta: ["Escuchó oferta","Evaluando propuesta","Cotizó","Venta / Emisión"]
+    },
+    Autos: {}, Vida: {}, PYMES: {}, ARL: {}, Hogar: {}, Salud: {}
+  };
+
+  function normalizePolicyName(name){
+    if(!name) return '';
+    return name.toString().trim().toUpperCase()
+      .replace('ESTÁNDAR','ESTANDAR')
+      .replace('CLÁSICO','CLASICO');
+  }
+
+  function rebuildPolicyCards(rows){
+    const list = PRODUCT_POLICIES[window.currentProduct] || [];
+    const counts = {};
+    list.forEach(p=>counts[normalizePolicyName(p)]=0);
+    (rows||[]).forEach(r=>{
+      const key = normalizePolicyName(r[2]);
+      if(counts[key] !== undefined){ counts[key] += 1; }
+    });
+    const container = $('#dynamic-policy-cards-row');
+    container.empty();
+    list.forEach(label=>{
+      const value = counts[normalizePolicyName(label)] || 0;
+      container.append(`
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card modern-card">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-8">
+                  <div class="numbers">
+                    <p class="text-sm mb-0 text-danger text-uppercase font-weight-bold font-titles">Pendientes</p>
+                    <h5 class="font-weight-bolder" data-target-number="${value}">${value}</h5>
+                    <p class="mb-0"><span class="text-success text-sm font-weight-bolder">${label}</span></p>
+                  </div>
+                </div>
+                <div class="col-4 text-end">
+                  <div class="icon-container icon-primary-gradient shadow text-center rounded-circle">
+                    <i class="fa-solid fa-layer-group fs-4 opacity-10"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>`);
+    });
+  }
   $(document).ready(function() {
     function initSelect2(selector) {
       $(selector).each(function() {
@@ -183,6 +244,7 @@
     });
 
     $("#getEPS").on('change',function(){
+      if (window.currentProduct && window.currentProduct !== 'Salud') { return; }
       if($(this).val() === "No"){
         Swal.fire({
           icon: "question",
@@ -424,6 +486,30 @@
       let sectionMain = $(".main-content");
       let sectionLogin = $("#Seccion_Login");
       if(data[1][0] != "externalUser"){
+        window.currentProduct = data[4] || 'Salud';
+        $('#card-total-subtitle').text('Leads ' + window.currentProduct);
+        $('#card-policies-prima').prop('hidden', false);
+        if(window.currentProduct !== 'Salud'){
+          $('#field_getEPS,#field_ObjectMultiple,#field_havemore60').hide();
+          $('#label_detailsPoliza').text('Producto');
+          const list = PRODUCT_POLICIES[window.currentProduct] || [];
+          const $sel = $('#detailsPoliza');
+          $sel.empty().append('<option value="" selected disabled hidden>Seleccione</option>');
+          list.forEach(v=> $sel.append(`<option value="${v}">${v}</option>`));
+          $('#container_detailsPlanPoliza').prop('hidden', true);
+          // Show product-specific fields
+          if(window.currentProduct === 'Autos'){
+            $('.product-autos').attr('hidden', false);
+          }else if(window.currentProduct === 'PYMES' || window.currentProduct === 'ARL'){
+            $('.product-pymes, .product-arl').attr('hidden', false);
+          }else if(window.currentProduct === 'Hogar'){
+            $('.product-hogar').attr('hidden', false);
+          }
+        }else{
+          $('#field_getEPS,#field_ObjectMultiple,#field_havemore60').show();
+          $('#label_detailsPoliza').text('Producto Salud');
+          $('.product-autos, .product-pymes, .product-arl, .product-hogar').attr('hidden', true);
+        }
         createPrimaryTable(data[1]);
         sectionMain.prop('hidden',false);
         sectionAside.prop('hidden',false);
@@ -580,8 +666,31 @@
         let sectionAside = $("#sidenav-main"); 
         let sectionMain = $(".main-content");
         let sectionLogin = $("#Seccion_Login");
-        if(data[1][0] != "externalUser"){
-          createPrimaryTable(data[1]);
+      if(data[1][0] != "externalUser"){
+        window.currentProduct = data[4] || 'Salud';
+        $('#card-policies-prima').prop('hidden', false);
+        $('#card-total-subtitle').text('Leads ' + window.currentProduct);
+        if(window.currentProduct !== 'Salud'){
+          $('#field_getEPS,#field_ObjectMultiple,#field_havemore60').hide();
+          $('#label_detailsPoliza').text('Producto');
+          const list = PRODUCT_POLICIES[window.currentProduct] || [];
+          const $sel = $('#detailsPoliza');
+          $sel.empty().append('<option value="" selected disabled hidden>Seleccione</option>');
+          list.forEach(v=> $sel.append(`<option value="${v}">${v}</option>`));
+          $('#container_detailsPlanPoliza').prop('hidden', true);
+          if(window.currentProduct === 'Autos'){
+            $('.product-autos').attr('hidden', false);
+          }else if(window.currentProduct === 'PYMES' || window.currentProduct === 'ARL'){
+            $('.product-pymes, .product-arl').attr('hidden', false);
+          }else if(window.currentProduct === 'Hogar'){
+            $('.product-hogar').attr('hidden', false);
+          }
+        }else{
+          $('#field_getEPS,#field_ObjectMultiple,#field_havemore60').show();
+          $('#label_detailsPoliza').text('Producto Salud');
+          $('.product-autos, .product-pymes, .product-arl, .product-hogar').attr('hidden', true);
+        }
+        createPrimaryTable(data[1]);
           sectionMain.prop('hidden',false);
           sectionAside.prop('hidden',false);
           sectionLogin.prop('hidden',true);
@@ -1034,21 +1143,6 @@
       }
     });
 
-    $('#titleTotalMedida').closest('.modern-card').on('click', function() {
-        let tablePenddings = $('#authorsTable').DataTable();
-        tablePenddings.column(2).search('SALUD MEDIDA').draw();
-    });
-
-    $('#titleTotalIntegral').closest('.modern-card').on('click', function() {
-        let tablePenddings = $('#authorsTable').DataTable();
-        tablePenddings.column(2).search('SALUD INTEGRAL').draw();
-    });
-
-    $('#titleTotalBienestar').closest('.modern-card').on('click', function() {
-        let tablePenddings = $('#authorsTable').DataTable();
-        tablePenddings.column(2).search('BIENESTAR Y SALUD').draw();
-    });
-
     $('#titleTotalSalud').closest('.modern-card').on('click', function() {
         let tablePenddings = $('#authorsTable').DataTable();
         tablePenddings.column(2).search('').draw();
@@ -1351,15 +1445,35 @@
     });
   });
 
+  function updatePoliciesPrimaCard(rows){
+      let totalPolicies = 0;
+      let totalPrima = 0;
+      (rows||[]).forEach(r=>{
+        try{
+          const valuesJson = r[17];
+          if(valuesJson){
+            const arr = JSON.parse(valuesJson);
+            if(Array.isArray(arr)){
+              totalPolicies += arr.length;
+              arr.forEach(it=>{
+                const amount = (it.amountPoliza||"").toString().replace(/\./g,'').replace(/,/g,'');
+                const n = parseInt(amount,10);
+                if(!isNaN(n)) totalPrima += n;
+              })
+            }
+          }
+        }catch(e){}
+      });
+      $('#titleTotalPolizasCount').text(totalPolicies);
+      $('#titleTotalPrima').text(new Intl.NumberFormat('es-CO').format(totalPrima));
+  }
+
   function createPrimaryTable(data){
-      $('#titleTotalMedida').text(data[3]);
-      $('#titleTotalMedida').attr('data-target-number', data[3]);
-      $('#titleTotalIntegral').text(data[2]);
-      $('#titleTotalIntegral').attr('data-target-number', data[2]);
-      $('#titleTotalBienestar').text(data[4]);
-      $('#titleTotalBienestar').attr('data-target-number', data[4]);
-      $('#titleTotalSalud').text(data[1]);
-      $('#titleTotalSalud').attr('data-target-number', data[1]);
+      const rows = data[0] || [];
+      $('#titleTotalSalud').text(rows.length);
+      $('#titleTotalSalud').attr('data-target-number', rows.length);
+      rebuildPolicyCards(rows);
+      updatePoliciesPrimaCard(rows);
       numbersInitialAnimate();
       $('#authorsTable').DataTable({
         data: data[0],
@@ -1399,11 +1513,11 @@
           { title: "Correo" },
           { title: "Tipo Id Cliente" },
           { title: "Id Cliente" },
-          { title: "Ciudad" },
+          { title: "Fuente" },
           { title: "Estado",
             className: "text-center",
             render: function(data, type, row) {
-              return '<p class="text-xs font-weight-bold mb-0">' + data + '</p>';
+              return '<p class="text-xs font-weight-bold mb-0">' + row[11] + '</p>';
             } 
           },
           { title: "Línea de Tiempo" },
@@ -1412,6 +1526,20 @@
           { title: "Detalles Producto" },
           { title: "Subestado" },
           { title: "Detalle Poliza" },
+          { title: "Placa",
+            render: function(data, type, row){
+              try{ const d = row[15] ? JSON.parse(row[15]) : {}; return d.plate || row[10] || ''; }catch(e){ return row[10]||''; }
+            }
+          },
+          { title: "Nombre Empresa",
+            render: function(data, type, row){ try{ const d=row[15]?JSON.parse(row[15]):{}; return d.company_name||'';}catch(e){return ''} }
+          },
+          { title: "NIT Empresa",
+            render: function(data, type, row){ try{ const d=row[15]?JSON.parse(row[15]):{}; return d.company_nit||'';}catch(e){return ''} }
+          },
+          { title: "Dirección",
+            render: function(data, type, row){ try{ const d=row[15]?JSON.parse(row[15]):{}; return d.address||'';}catch(e){return ''} }
+          },
           { title: "Acción",
             className: "text-center",
             render: function(data, type, row, meta) {
@@ -1424,9 +1552,7 @@
         ],
         order: [],
         lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-        columnDefs: [
-          { targets: [3,5,6,7,8,9,11,12,13,14,15,16], visible: false } 
-        ],
+        columnDefs: [ { targets: [3,5,6,7,8,11,12,13,14,15,16], visible: false } ],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         language: {
           search: "_INPUT_",
@@ -1451,14 +1577,11 @@
   }
 
   function createSecundaryTable(data){
-      $('#titleTotalMedida').text(data[3]);
-      $('#titleTotalMedida').attr('data-target-number', data[3]);
-      $('#titleTotalIntegral').text(data[2]);
-      $('#titleTotalIntegral').attr('data-target-number', data[2]);
-      $('#titleTotalBienestar').text(data[4]);
-      $('#titleTotalBienestar').attr('data-target-number', data[4]);
-      $('#titleTotalSalud').text(data[1]);
-      $('#titleTotalSalud').attr('data-target-number', data[1]);
+      const rows = data[0] || [];
+      $('#titleTotalSalud').text(rows.length);
+      $('#titleTotalSalud').attr('data-target-number', rows.length);
+      rebuildPolicyCards(rows);
+      updatePoliciesPrimaCard(rows);
       numbersInitialAnimate();
       $('#authorsTable').DataTable({
         data: data[0],
@@ -1498,11 +1621,11 @@
           { title: "Correo" },
           { title: "Tipo Id Cliente" },
           { title: "Id Cliente" },
-          { title: "Ciudad" },
+          { title: "Fuente" },
           { title: "Estado",
             className: "text-center",
             render: function(data, type, row) {
-              return '<p class="text-xs font-weight-bold mb-0">' + data + '</p>';
+              return '<p class="text-xs font-weight-bold mb-0">' + row[11] + '</p>';
             } 
           },
           { title: "Línea de Tiempo" },
@@ -1511,6 +1634,10 @@
           { title: "Detalles Producto" },
           { title: "Subestado" },
           { title: "Detalle Poliza" },
+          { title: "Placa", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.plate||row[10]||'';}catch(e){return row[10]||'';} } },
+          { title: "Nombre Empresa", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.company_name||'';}catch(e){return '';} } },
+          { title: "NIT Empresa", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.company_nit||'';}catch(e){return '';} } },
+          { title: "Dirección", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.address||'';}catch(e){return '';} } },
           { title: "Acción",
             className: "text-center",
             render: function(data, type, row, meta) {
@@ -1523,9 +1650,7 @@
         ],
         order: [],
         lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-        columnDefs: [
-          { targets: [3,5,6,7,8,9,11,12,13,14,15,16], visible: false } 
-        ],
+        columnDefs: [ { targets: [3,5,6,7,8,11,12,13,14,15,16], visible: false } ],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         language: {
           search: "_INPUT_",
@@ -1551,14 +1676,11 @@
   }
 
   function createTercerityTable(data){
-    $('#titleTotalMedida').text(data[3]);
-    $('#titleTotalMedida').attr('data-target-number', data[3]);
-    $('#titleTotalIntegral').text(data[2]);
-    $('#titleTotalIntegral').attr('data-target-number', data[2]);
-    $('#titleTotalBienestar').text(data[4]);
-    $('#titleTotalBienestar').attr('data-target-number', data[4]);
-    $('#titleTotalSalud').text(data[1]);
-    $('#titleTotalSalud').attr('data-target-number', data[1]);
+    const rows = data[0] || [];
+    $('#titleTotalSalud').text(rows.length);
+    $('#titleTotalSalud').attr('data-target-number', rows.length);
+    rebuildPolicyCards(rows);
+    updatePoliciesPrimaCard(rows);
     numbersInitialAnimate();
     $('#authorsTable').DataTable({
       data: data[0],
@@ -1594,11 +1716,11 @@
         { title: "Correo" },
         { title: "Tipo Id Cliente" },
         { title: "Id Cliente" },
-        { title: "Ciudad" },
+        { title: "Fuente" },
         { title: "Estado",
             className: "text-center",
             render: function(data, type, row) {
-              return '<p class="text-xs font-weight-bold mb-0">' + data + '</p>';
+              return '<p class="text-xs font-weight-bold mb-0">' + row[11] + '</p>';
             } 
         },
         { title: "Línea de Tiempo" },
@@ -1607,6 +1729,10 @@
         { title: "Detalles Producto" },
         { title: "Subestado" },
         { title: "Detalle Poliza" },
+        { title: "Placa", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.plate||row[10]||'';}catch(e){return row[10]||'';} } },
+        { title: "Nombre Empresa", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.company_name||'';}catch(e){return '';} } },
+        { title: "NIT Empresa", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.company_nit||'';}catch(e){return '';} } },
+        { title: "Dirección", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.address||'';}catch(e){return '';} } },
         { title: "Acción",
           className: "text-center",
           render: function(data, type, row, meta) {
@@ -1619,9 +1745,7 @@
       ],
       order: [],
       lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-      columnDefs: [
-        { targets: [3,5,6,7,8,9,11,12,13,14,15,16], visible: false } 
-      ],
+      columnDefs: [ { targets: [3,5,6,7,8,11,12,13,14,15,16], visible: false } ],
       dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
       language: {
           search: "_INPUT_",
@@ -1646,14 +1770,11 @@
     });
   }
   function createQuaternaryTable(data){
-      $('#titleTotalMedida').text(data[3]);
-      $('#titleTotalMedida').attr('data-target-number', data[3]);
-      $('#titleTotalIntegral').text(data[2]);
-      $('#titleTotalIntegral').attr('data-target-number', data[2]);
-      $('#titleTotalBienestar').text(data[4]);
-      $('#titleTotalBienestar').attr('data-target-number', data[4]);
-      $('#titleTotalSalud').text(data[1]);
-      $('#titleTotalSalud').attr('data-target-number', data[1]);
+      const rows = data[0] || [];
+      $('#titleTotalSalud').text(rows.length);
+      $('#titleTotalSalud').attr('data-target-number', rows.length);
+      rebuildPolicyCards(rows);
+      updatePoliciesPrimaCard(rows);
       numbersInitialAnimate();
       $('#authorsTable').DataTable({
         data: data[0],
@@ -1693,11 +1814,11 @@
           { title: "Correo" },
           { title: "Tipo Id Cliente" },
           { title: "Id Cliente" },
-          { title: "Ciudad" },
+          { title: "Fuente" },
           { title: "Estado",
             className: "text-center",
             render: function(data, type, row) {
-              return '<p class="text-xs font-weight-bold mb-0">' + data + '</p>';
+              return '<p class="text-xs font-weight-bold mb-0">' + row[11] + '</p>';
             } 
           },
           { title: "Línea de Tiempo" },
@@ -1706,6 +1827,10 @@
           { title: "Detalles Producto" },
           { title: "Subestado" },
           { title: "Detalle Poliza" },
+          { title: "Placa", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.plate||row[10]||'';}catch(e){return row[10]||'';} } },
+          { title: "Nombre Empresa", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.company_name||'';}catch(e){return '';} } },
+          { title: "NIT Empresa", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.company_nit||'';}catch(e){return '';} } },
+          { title: "Dirección", render: function(d,t,row){ try{ const dta=row[15]?JSON.parse(row[15]):{}; return dta.address||'';}catch(e){return '';} } },
           { title: "Acción",
             className: "text-center",
             render: function(data, type, row, meta) {
@@ -1718,9 +1843,7 @@
         ],
         order: [],
         lengthMenu: [[5, 10, 25, 50, 100], [5, 10, 25, 50, 100]],
-        columnDefs: [
-          { targets: [3,5,6,7,8,9,11,12,13,14,15,16], visible: false } 
-        ],
+        columnDefs: [ { targets: [3,5,6,7,8,11,12,13,14,15,16], visible: false } ],
         dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
         language: {
           search: "_INPUT_",
@@ -1910,8 +2033,8 @@
       dataPolizas = JSON.parse(rowData[16])
     }
     $("#requestTimeLine").empty();
-    if(rowData[14] != ''){
-      let dataProduct = JSON.parse(rowData[14]);
+    if(rowData[15] != ''){
+      let dataProduct = JSON.parse(rowData[15]);
 
       if (dataProduct.poliza_type !== null && typeof dataProduct.poliza_type !== 'undefined') {
         $('#typePoliza').val(dataProduct.poliza_type).trigger('change');
@@ -1991,8 +2114,8 @@
         }
       });
     }
-    let status = rowData[10];
-    let substatus = rowData[15];
+    let status = rowData[11];
+    let substatus = rowData[16];
     setDecisionTreeState(status, substatus)
     $('#clientModal').modal({
       backdrop: 'static',
@@ -2009,12 +2132,9 @@
       return;
     }
 
-    const subestados = {
-      noContacto: ["No contesta", "Fuera servicio", "Mensaje tercero", "Cliente cuelga", "No conocen al cliente", "Cliente fuera del país", "Volver llamar seguimiento", "Poliza recaudada", "Poliza anulada", "No gestionado"],
-      volverAContactar: ["Llamar en la mañana", "Llamar en la tarde", "Regresar Llamada"],
-      noAcepta: ["No escucha propuesta", "No aplica condiciones de producto", "Muy costoso", "No le interesa", "No es la persona que tomará el seguro"],
-      acepta: ["Escuchó oferta", "Evaluando propuesta", "Cotizó", "Venta / Emisión"]
-    };
+    const product = window.currentProduct || 'Salud';
+    const base = DECISION_TREE.default;
+    const subestados = { ...base, ...(DECISION_TREE[product] || {}) };
 
     if (subestados.acepta.includes(substatus)) {
       $('#contactado').val('si').trigger('change');
