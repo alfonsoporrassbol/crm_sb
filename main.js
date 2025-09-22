@@ -57,7 +57,7 @@
     list.forEach(label=>{
       const value = counts[normalizePolicyName(label)] || 0;
       container.append(`
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-xl-0 mb-4">
           <div class="card modern-card">
             <div class="card-body p-3">
               <div class="row">
