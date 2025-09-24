@@ -360,27 +360,27 @@
     });
 
     $('#btnHistory').click(function() {
-      $('#clientInfoView').hide();
+      $('#clientInfoView').show();
       $('#reminderView').hide();
       $('#historyView').show();
       $("#timeLineView").hide();
-      $(".modal-left-column").css("overflow-y","hidden")
+      $(".modal-left-column").css("overflow-y","auto")
     });
 
     $('#btnReminder').click(function() {
-      $('#clientInfoView').hide();
+      $('#clientInfoView').show();
       $('#historyView').hide();
       $('#reminderView').show();
       $("#timeLineView").hide();
-      $(".modal-left-column").css("overflow-y","hidden")
+      $(".modal-left-column").css("overflow-y","auto")
     });
 
     $('#btntimeLine').click(function() {
-      $('#clientInfoView').hide();
+      $('#clientInfoView').show();
       $('#historyView').hide();
       $('#reminderView').hide();
       $("#timeLineView").show();
-      $(".modal-left-column").css("overflow-y","hidden")
+      $(".modal-left-column").css("overflow-y","auto")
     });
 
     $('#btnVolverHistorial, #btnVolverRecordatorio, #btnVolverLineaTiempo').click(function() {
@@ -1994,6 +1994,11 @@
     let status = rowData[10];
     let substatus = rowData[15];
     setDecisionTreeState(status, substatus)
+    $('#clientInfoView').show();
+    $('#historyView').hide();
+    $('#reminderView').hide();
+    $("#timeLineView").hide();
+    $(".modal-left-column").css("overflow-y","auto");
     $('#clientModal').modal({
       backdrop: 'static',
       keyboard: false

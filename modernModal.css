@@ -467,8 +467,8 @@
   .timeLine-body {
     padding: 1rem;
     flex-grow: 1;
-    overflow-y: auto;
-    max-height: calc(89vh - 120px);
+    overflow-y: visible;
+    max-height: none;
   }
 
   /* Estilos para el chat */
