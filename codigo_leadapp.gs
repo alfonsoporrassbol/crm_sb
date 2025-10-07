@@ -1,10 +1,165 @@
 function doGet(e) {
-  let template = HtmlService.createTemplateFromFile("index").evaluate().addMetaTag('viewport', 'width=device-width, initial-scale=1').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('CRM Mercadeo Bolívar').setFaviconUrl('https://d9b6rardqz97a.cloudfront.net/wp-content/uploads/2019/11/31104435/icon-bolivar-conmigo.png');
-  return template
+  const view = e && e.parameter && e.parameter.view ? e.parameter.view : null;
+  const fileToServe = view === 'simpleLeadApp' ? 'lead_app' : 'index';
+  let template = HtmlService.createTemplateFromFile(fileToServe)
+    .evaluate()
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+    .setTitle('CRM Mercadeo Bolívar')
+    .setFaviconUrl('https://d9b6rardqz97a.cloudfront.net/wp-content/uploads/2019/11/31104435/icon-bolivar-conmigo.png');
+  return template;
 }
 
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+// ===== Simple Lead App (Login + Manager/Agent flows) =====
+const DEFAULT_STAGES = ['New', 'Qualified', 'Contacted', 'Proposal', 'Won'];
+
+function getLeadAppConfig() {
+  const props = PropertiesService.getScriptProperties();
+  const managerEmail = props.getProperty('MANAGER_EMAIL') || '';
+  const fronts = [
+    { key: 'A', label: 'Front A' },
+    { key: 'B', label: 'Front B' }
+  ];
+  return {
+    managerEmail: managerEmail,
+    fronts: fronts,
+    stages: DEFAULT_STAGES
+  };
+}
+
+function appLogin(name, email) {
+  const cfg = getLeadAppConfig();
+  return {
+    ok: true,
+    isManager: (email || '').toLowerCase() === (cfg.managerEmail || '').toLowerCase(),
+    name: name || '',
+    email: email || ''
+  };
+}
+
+function getLeadsForFront(frontKey) {
+  const { sheet } = getFrontSheet_(frontKey);
+  const header = readHeader_(sheet);
+  if (header.length === 0) {
+    // Initialize sheet with default header
+    const hdr = getDefaultHeader_();
+    sheet.getRange(1, 1, 1, hdr.length).setValues([hdr]);
+    return { header: hdr, items: [] };
+  }
+  const values = sheet.getRange(2, 1, Math.max(sheet.getLastRow() - 1, 0), header.length).getDisplayValues();
+  const col = makeColIndex_(header);
+  const items = values.filter(r => r.join('').trim().length > 0).map(row => {
+    const stagesStr = col.Stages !== undefined ? row[col.Stages] : '';
+    let stages = {};
+    try { stages = stagesStr ? JSON.parse(stagesStr) : {}; } catch (e) { stages = {}; }
+    return {
+      timestamp: col.Timestamp !== undefined ? row[col.Timestamp] : '',
+      leadId: col.LeadId !== undefined ? row[col.LeadId] : '',
+      leadName: col.LeadName !== undefined ? row[col.LeadName] : '',
+      responsible: col.Responsible !== undefined ? row[col.Responsible] : '',
+      manager: col.Manager !== undefined ? row[col.Manager] : '',
+      front: col.Front !== undefined ? row[col.Front] : '',
+      volume: col.Volume !== undefined ? row[col.Volume] : '',
+      netWorth: col.NetWorth !== undefined ? row[col.NetWorth] : '',
+      stages: stages
+    };
+  });
+  return { header: header, items: items };
+}
+
+function updateLeadStages(frontKey, leadId, stages) {
+  if (!leadId) throw new Error('Missing leadId');
+  const { sheet } = getFrontSheet_(frontKey);
+  const header = readHeader_(sheet);
+  const col = makeColIndex_(header);
+  if (col.LeadId === undefined) throw new Error('Sheet missing LeadId column');
+  if (col.Stages === undefined) {
+    // Add Stages column if missing
+    sheet.getRange(1, header.length + 1).setValue('Stages');
+  }
+  const idFinder = sheet.getRange(2, col.LeadId + 1, Math.max(sheet.getLastRow() - 1, 0), 1)
+    .createTextFinder(leadId).matchEntireCell(true).ignoreDiacritics(true).findNext();
+  if (!idFinder) throw new Error('Lead not found');
+  const rowIndex = idFinder.getRow();
+  const stagesStr = JSON.stringify(stages || {});
+  const stagesColIndex = readHeader_(sheet).indexOf('Stages') + 1;
+  sheet.getRange(rowIndex, stagesColIndex).setValue(stagesStr);
+  return { ok: true };
+}
+
+function createLead(lead) {
+  const frontKey = lead && lead.front ? lead.front : 'A';
+  const { sheet } = getFrontSheet_(frontKey);
+  const header = readHeader_(sheet);
+  let hdr = header;
+  if (hdr.length === 0) {
+    hdr = getDefaultHeader_();
+    sheet.getRange(1, 1, 1, hdr.length).setValues([hdr]);
+  }
+  const col = makeColIndex_(hdr);
+  const now = new Date();
+  const nextRow = sheet.getLastRow() + 1;
+  const row = new Array(hdr.length).fill('');
+  row[col.Timestamp] = Utilities.formatDate(now, 'America/Bogota', 'yyyy-MM-dd HH:mm:ss');
+  row[col.LeadId] = lead.leadId || generateIdUnique('LEAD-');
+  row[col.LeadName] = lead.leadName || '';
+  row[col.Responsible] = lead.responsible || '';
+  row[col.Manager] = lead.manager || '';
+  row[col.Front] = frontKey;
+  row[col.Volume] = lead.volume || '';
+  row[col.NetWorth] = lead.netWorth || '';
+  row[col.Stages] = JSON.stringify(makeDefaultStages_());
+  sheet.getRange(nextRow, 1, 1, row.length).setValues([row]);
+  return { ok: true, leadId: row[col.LeadId] };
+}
+
+// Helpers
+function getDefaultHeader_() {
+  return ['Timestamp', 'LeadId', 'LeadName', 'Responsible', 'Manager', 'Front', 'Volume', 'NetWorth', 'Stages'];
+}
+
+function makeDefaultStages_() {
+  const map = {};
+  DEFAULT_STAGES.forEach(s => { map[s] = false; });
+  return map;
+}
+
+function readHeader_(sheet) {
+  if (sheet.getLastRow() === 0) return [];
+  const header = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getDisplayValues()[0];
+  // Trim trailing empty columns
+  for (let i = header.length - 1; i >= 0; i--) {
+    if (String(header[i]).trim() === '') header.pop(); else break;
+  }
+  return header;
+}
+
+function makeColIndex_(header) {
+  const index = {};
+  header.forEach((name, i) => { index[String(name).trim()] = i; });
+  return index;
+}
+
+function getFrontSheet_(frontKey) {
+  const props = PropertiesService.getScriptProperties();
+  const fk = (frontKey || 'A').toUpperCase();
+  const idKey = fk === 'B' ? 'FRONT_B_SPREADSHEET_ID' : 'FRONT_A_SPREADSHEET_ID';
+  const nameKey = fk === 'B' ? 'FRONT_B_SHEET_NAME' : 'FRONT_A_SHEET_NAME';
+  const spreadsheetId = props.getProperty(idKey);
+  const sheetName = props.getProperty(nameKey) || 'Leads';
+  let ss;
+  if (spreadsheetId) {
+    ss = SpreadsheetApp.openById(spreadsheetId);
+  } else {
+    // Fallback to existing warehouse if available
+    ss = typeof warehouseLeads !== 'undefined' ? warehouseLeads : SpreadsheetApp.getActive();
+  }
+  let sheet = ss.getSheetByName(sheetName) || ss.insertSheet(sheetName);
+  return { ss, sheet };
 }
 
 const warehouseLeads = SpreadsheetApp.openById("1KOHa58xAl9jcrq8ic8zObGx-5CuS-MbUHvqmQ_dySaQ");
