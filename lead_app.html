@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lead Manager - Simple App</title>
+  <style>
+    :root { --green:#009056; --gray:#f5f6f7; --text:#222; }
+    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin:0; color:var(--text); background:var(--gray); }
+    .container { max-width: 980px; margin: 28px auto; padding: 0 16px; }
+    .card { background:#fff; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,.06); padding: 20px; margin-bottom: 16px; }
+
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    h2 { font-size: 16px; margin: 0 0 12px; color:#444; }
+    .muted { color:#666; font-size: 13px; }
+
+    .row { display:flex; gap:12px; flex-wrap: wrap; }
+    .col { flex:1 1 260px; }
+
+    label { display:block; font-size: 12px; color:#444; margin-bottom: 6px; }
+    input, select, button { font: inherit; }
+    input, select { width:100%; box-sizing: border-box; padding: 10px 12px; border:1px solid #dcdcdc; border-radius: 10px; background:#fff; }
+    input:focus, select:focus { outline: 2px solid rgba(0,144,86,.2); border-color: var(--green); }
+    button { background: var(--green); color:#fff; border:0; padding: 10px 14px; border-radius: 10px; cursor: pointer; }
+    button[disabled] { opacity: .6; cursor:not-allowed; }
+
+    .actions { display:flex; gap:10px; align-items:center; }
+    .pill { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; background:#eef7f2; color:#155d3a; border-radius:999px; font-size: 12px; }
+
+    table { width:100%; border-collapse: collapse; }
+    th, td { padding:10px; border-bottom:1px solid #eee; text-align:left; font-size: 13px; }
+    th { background:#fafafa; color:#555; position: sticky; top:0; z-index:1; }
+    .scroll { max-height: 420px; overflow:auto; border:1px solid #eee; border-radius: 10px; }
+    .checkbox-grid { display:flex; gap:8px; flex-wrap: wrap; }
+    .stage { display:inline-flex; gap:6px; align-items:center; padding:6px 10px; border:1px solid #e7e7e7; border-radius: 999px; }
+
+    .hidden { display:none !important; }
+    .error { color:#b42318; font-size: 12px; }
+    .success { color: #116942; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Lead Manager (Apps Script)</h1>
+      <div class="muted">Simple login, role-based view, Sheets-backed.</div>
+    </div>
+
+    <!-- Login -->
+    <div id="loginCard" class="card">
+      <h2>Login</h2>
+      <div class="row">
+        <div class="col">
+          <label for="inpName">Your name</label>
+          <input id="inpName" placeholder="Jane Doe" />
+        </div>
+        <div class="col">
+          <label for="inpEmail">Email</label>
+          <input id="inpEmail" placeholder="jane@company.com" type="email" />
+        </div>
+      </div>
+      <div class="actions" style="margin-top:12px;">
+        <button id="btnLogin">Continue</button>
+        <div id="loginNote" class="muted"></div>
+      </div>
+      <div id="loginError" class="error" style="margin-top:8px;"></div>
+    </div>
+
+    <!-- Manager view -->
+    <div id="managerCard" class="card hidden">
+      <h2>Manager dashboard</h2>
+      <div class="row">
+        <div class="col">
+          <label>Front</label>
+          <select id="selFront">
+            <option value="A">Front A</option>
+            <option value="B">Front B</option>
+          </select>
+        </div>
+        <div class="col actions" style="align-items:flex-end;">
+          <button id="btnLoadFront">Load leads</button>
+          <span id="frontInfo" class="pill hidden"></span>
+        </div>
+      </div>
+      <div id="stagesLegend" class="muted" style="margin-top:8px;"></div>
+      <div id="leadsContainer" class="scroll" style="margin-top:12px;">
+        <table id="leadsTable">
+          <thead id="leadsHead"></thead>
+          <tbody id="leadsBody"></tbody>
+        </table>
+      </div>
+      <div id="mgrMsg" class="success" style="margin-top:8px;"></div>
+    </div>
+
+    <!-- User create-lead view -->
+    <div id="userCard" class="card hidden">
+      <h2>Create a lead</h2>
+      <div class="row">
+        <div class="col">
+          <label for="leadName">Lead name</label>
+          <input id="leadName" placeholder="Acme Corp" />
+        </div>
+        <div class="col">
+          <label for="responsible">Responsible</label>
+          <input id="responsible" placeholder="User responsible" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="manager">Manager</label>
+          <input id="manager" placeholder="Manager name or email" />
+        </div>
+        <div class="col">
+          <label for="leadId">Lead ID (optional)</label>
+          <input id="leadId" placeholder="LEAD-123..." />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="front">Front</label>
+          <select id="front">
+            <option value="A">Front A</option>
+            <option value="B">Front B</option>
+          </select>
+        </div>
+        <div class="col">
+          <label for="volume">Volume</label>
+          <input id="volume" placeholder="Volume" />
+        </div>
+        <div class="col">
+          <label for="netWorth">Net worth</label>
+          <input id="netWorth" placeholder="Net worth" />
+        </div>
+      </div>
+      <div class="actions" style="margin-top:12px;">
+        <button id="btnCreate">Create lead</button>
+        <div id="createMsg" class="success"></div>
+      </div>
+      <div id="createErr" class="error" style="margin-top:8px;"></div>
+    </div>
+
+  </div>
+
+  <script>
+    (function(){
+      const state = {
+        stages: ['New','Qualified','Contacted','Proposal','Won'],
+        isManager: false,
+        front: 'A',
+        items: [],
+        email: '',
+        name: ''
+      };
+
+      function qs(id) { return document.getElementById(id); }
+      function show(el, v) { el.classList.toggle('hidden', !v); }
+      function text(el, t) { el.textContent = t || ''; }
+
+      function init(){
+        // Load config
+        if (google && google.script && google.script.run){
+          google.script.run.withSuccessHandler(cfg => {
+            if (cfg && Array.isArray(cfg.stages) && cfg.stages.length){
+              state.stages = cfg.stages;
+              qs('stagesLegend').textContent = 'Stages: ' + state.stages.join(' · ');
+            }
+          }).getLeadAppConfig();
+        }
+        qs('btnLogin').addEventListener('click', onLogin);
+        qs('btnLoadFront').addEventListener('click', onLoadFront);
+        qs('selFront').addEventListener('change', e => state.front = e.target.value);
+        qs('btnCreate').addEventListener('click', onCreateLead);
+      }
+
+      function onLogin(){
+        const name = qs('inpName').value.trim();
+        const email = qs('inpEmail').value.trim();
+        text(qs('loginError'),'');
+        if (!name || !email){
+          text(qs('loginError'), 'Please enter name and email');
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+          text(qs('loginError'), 'Invalid email');
+          return;
+        }
+        qs('btnLogin').disabled = true;
+        google.script.run.withSuccessHandler(res => {
+          qs('btnLogin').disabled = false;
+          if (res && res.ok){
+            state.isManager = !!res.isManager; state.email = res.email; state.name = res.name;
+            text(qs('loginNote'), state.isManager ? 'Logged in as Manager' : 'Logged in');
+            show(qs('loginCard'), false);
+            if (state.isManager){
+              show(qs('managerCard'), true);
+            } else {
+              show(qs('userCard'), true);
+            }
+          } else {
+            text(qs('loginError'), 'Login failed');
+          }
+        }).appLogin(name, email);
+      }
+
+      function onLoadFront(){
+        qs('btnLoadFront').disabled = true; text(qs('mgrMsg'),'');
+        google.script.run.withSuccessHandler(data => {
+          qs('btnLoadFront').disabled = false;
+          renderLeads(data && data.items ? data.items : []);
+          const count = (data && data.items) ? data.items.length : 0;
+          const pill = qs('frontInfo');
+          pill.textContent = `Front ${state.front} · ${count} lead(s)`;
+          show(pill, true);
+        }).getLeadsForFront(state.front);
+      }
+
+      function renderLeads(items){
+        state.items = items;
+        const head = qs('leadsHead');
+        const body = qs('leadsBody');
+        head.innerHTML = '';
+        body.innerHTML = '';
+
+        // Build header
+        const cols = ['LeadId','LeadName','Responsible','Manager','Volume','NetWorth'];
+        const th = document.createElement('tr');
+        cols.forEach(c => { const el = document.createElement('th'); el.textContent = c; th.appendChild(el); });
+        const stTh = document.createElement('th'); stTh.textContent = 'Stages'; th.appendChild(stTh);
+        head.appendChild(th);
+
+        // Rows
+        for (const it of items){
+          const tr = document.createElement('tr');
+          const cells = [it.leadId, it.leadName, it.responsible, it.manager, it.volume, it.netWorth];
+          cells.forEach(v => { const td = document.createElement('td'); td.textContent = v || ''; tr.appendChild(td); });
+          const tdStages = document.createElement('td');
+          tdStages.appendChild(buildStagesEditor(it));
+          tr.appendChild(tdStages);
+          body.appendChild(tr);
+        }
+      }
+
+      function buildStagesEditor(item){
+        const wrap = document.createElement('div');
+        wrap.className = 'checkbox-grid';
+        const stages = normalizeStages(item.stages || {});
+        for (const s of state.stages){
+          const pill = document.createElement('label'); pill.className = 'stage';
+          const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!stages[s];
+          cb.addEventListener('change', () => onToggleStage(item, s, cb.checked));
+          const txt = document.createElement('span'); txt.textContent = s;
+          pill.appendChild(cb); pill.appendChild(txt); wrap.appendChild(pill);
+        }
+        return wrap;
+      }
+
+      function normalizeStages(map){
+        const out = {}; state.stages.forEach(s => { out[s] = !!map[s]; }); return out;
+      }
+
+      function onToggleStage(item, stage, checked){
+        const stages = normalizeStages(item.stages || {});
+        stages[stage] = !!checked;
+        // Persist
+        google.script.run.withSuccessHandler(() => {
+          item.stages = stages; text(qs('mgrMsg'), 'Saved'); setTimeout(()=>text(qs('mgrMsg'),''), 1200);
+        }).withFailureHandler(err => {
+          text(qs('mgrMsg'), 'Error: ' + (err && err.message ? err.message : err));
+        }).updateLeadStages(item.front || state.front, item.leadId, stages);
+      }
+
+      function onCreateLead(){
+        text(qs('createErr'),''); text(qs('createMsg'),'');
+        const lead = {
+          leadName: qs('leadName').value.trim(),
+          responsible: qs('responsible').value.trim(),
+          manager: qs('manager').value.trim(),
+          leadId: qs('leadId').value.trim(),
+          front: qs('front').value,
+          volume: qs('volume').value.trim(),
+          netWorth: qs('netWorth').value.trim()
+        };
+        if (!lead.leadName || !lead.responsible || !lead.manager){
+          text(qs('createErr'), 'Please fill lead name, responsible, and manager');
+          return;
+        }
+        qs('btnCreate').disabled = true;
+        google.script.run.withSuccessHandler(res => {
+          qs('btnCreate').disabled = false;
+          if (res && res.ok){
+            text(qs('createMsg'), `Lead created (ID: ${res.leadId})`);
+            ['leadName','responsible','manager','leadId','volume','netWorth'].forEach(id => qs(id).value = '');
+          } else {
+            text(qs('createErr'), 'Create failed');
+          }
+        }).withFailureHandler(err => {
+          qs('btnCreate').disabled = false; text(qs('createErr'), 'Error: ' + (err && err.message ? err.message : err));
+        }).createLead(lead);
+      }
+
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>
